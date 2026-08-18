@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { getAllProducts } from '@/lib/products';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Product, ProductType, Rarity, Condition, GradingCompany, Language } from '@/types';
@@ -50,7 +50,8 @@ const initialFilters: Filters = {
 };
 
 export default function PokemonPage() {
-  const allProducts = useMemo(() => getAllProducts(), []);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  useEffect(() => { getAllProducts().then(setAllProducts); }, []);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState<Filters>(initialFilters);
   const [sortBy, setSortBy] = useState<SortOption>('relevance');

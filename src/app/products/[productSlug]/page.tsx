@@ -67,7 +67,7 @@ function StarRating({ rating }: { rating: number }) {
 
 export async function generateMetadata({ params }: { params: Promise<{ productSlug: string }> }) {
   const { productSlug } = await params;
-  const product = getProductBySlug(productSlug);
+  const product = await getProductBySlug(productSlug);
   if (!product) return { title: 'Product Not Found — Vault TCG Market' };
 
   const title = product.gradingCompany && product.grade
@@ -98,10 +98,10 @@ export async function generateMetadata({ params }: { params: Promise<{ productSl
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ productSlug: string }> }) {
   const { productSlug } = await params;
-  const product = getProductBySlug(productSlug);
+  const product = await getProductBySlug(productSlug);
   if (!product) notFound();
 
-  const relatedProducts = getRelatedProducts(product, 4);
+  const relatedProducts = await getRelatedProducts(product, 4);
   const inStock = product.stock > 0;
   const isLowStock = product.stock > 0 && product.stock <= 5;
   const hasDiscount = product.compareAtPrice != null && product.compareAtPrice > product.price;

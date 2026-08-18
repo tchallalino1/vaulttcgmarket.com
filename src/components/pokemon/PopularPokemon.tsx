@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { getPopularPokemon } from '@/lib/pokemon';
 import { PokemonCard } from './PokemonCard';
 
-export function PopularPokemon() {
-  const pokemon = getPopularPokemon();
+export async function PopularPokemon() {
+  const pokemon = await getPopularPokemon();
 
   return (
     <section className="w-full">

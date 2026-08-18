@@ -1,14 +1,15 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getFeaturedProduct } from '@/lib/products';
 import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
 import { MarketTrendCard } from './MarketTrendCard';
 import { TrustFeatures } from './TrustFeatures';
 
 export function HeroSection() {
-  const featured = getFeaturedProduct();
+  const [featured, setFeatured] = useState<any>(null);
+  useEffect(() => { getFeaturedProduct().then(setFeatured); }, []);
   const [imgError, setImgError] = useState(false);
 
   const imageUrl = featured?.pokemonTcgCardId

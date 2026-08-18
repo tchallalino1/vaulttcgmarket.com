@@ -29,7 +29,7 @@ export default function SearchContent() {
 
   useEffect(() => {
     if (query) {
-      setResults(searchAll(query));
+      searchAll(query).then(setResults);
       setSearchInput(query);
     } else {
       setResults({ products: [], pokemon: [], sets: [] });

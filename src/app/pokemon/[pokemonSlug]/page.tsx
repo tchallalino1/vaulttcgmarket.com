@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/products/ProductCard';
 
 export async function generateMetadata({ params }: { params: Promise<{ pokemonSlug: string }> }) {
   const { pokemonSlug } = await params;
-  const pokemon = getPokemonBySlug(pokemonSlug);
+  const pokemon = await getPokemonBySlug(pokemonSlug);
   if (!pokemon) return { title: 'Not Found' };
   return {
     title: `${pokemon.name} Cards — Vault TCG Market`,
@@ -16,10 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ pokemonSl
 
 export default async function PokemonDetailPage({ params }: { params: Promise<{ pokemonSlug: string }> }) {
   const { pokemonSlug } = await params;
-  const pokemon = getPokemonBySlug(pokemonSlug);
+  const pokemon = await getPokemonBySlug(pokemonSlug);
   if (!pokemon) notFound();
 
-  const products = getProductsByPokemon(pokemon.name);
+  const products = await getProductsByPokemon(pokemon.name);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

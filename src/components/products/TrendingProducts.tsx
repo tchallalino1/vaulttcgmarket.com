@@ -1,12 +1,13 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getTrendingProducts } from '@/lib/products';
 import { ProductCard } from './ProductCard';
 
 export function TrendingProducts() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const products = getTrendingProducts();
+  const [products, setProducts] = useState<any[]>([]);
+  useEffect(() => { getTrendingProducts().then(setProducts); }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (!scrollRef.current) return;

@@ -1,3 +1,9 @@
-import { seedCategories, getCategories, getCategoryBySlug } from '@/seed/categories';
-
-export { seedCategories, getCategories, getCategoryBySlug };
+// Categories data access - uses Prisma (Neon DB)
+export {
+  getAllCategories,
+  getCategoryById,
+  getCategoryBySlug,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from '@/lib/admin/db';

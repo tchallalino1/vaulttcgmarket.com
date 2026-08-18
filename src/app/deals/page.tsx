@@ -7,8 +7,8 @@ export const metadata = {
   description: 'Great deals and discounted Pokémon cards and products.',
 };
 
-export default function DealsPage() {
-  const deals = getDeals();
+export default async function DealsPage() {
+  const deals = await getDeals();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

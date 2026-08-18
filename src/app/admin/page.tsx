@@ -6,11 +6,18 @@ export const metadata: Metadata = {
   title: 'Dashboard — Vault TCG Admin',
 };
 
-export default function AdminDashboard() {
-  const stats = getProductStats();
-  const products = getAllProducts();
-  const lowStockProducts = products.filter(p => p.stock > 0 && p.stock <= 3).slice(0, 5);
-  const recentProducts = [...products].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()).slice(0, 5);
+export default async function AdminDashboard() {
+  const [stats, allProducts, allPokemon, allSets, allCategories, allSellers] = await Promise.all([
+    getProductStats(),
+    getAllProducts(),
+    getAllPokemon(),
+    getAllSets(),
+    getAllCategories(),
+    getAllSellers(),
+  ]);
+  const products = allProducts;
+  const lowStockProducts = products.filter((p: any) => p.stock > 0 && p.stock <= 3).slice(0, 5);
+  const recentProducts = [...products].sort((a: any, b: any) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()).slice(0, 5);
 
   const statCards = [
     { label: 'Total Products', value: stats.total, href: '/admin/products', color: 'bg-purple-500', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' },
@@ -88,10 +95,10 @@ export default function AdminDashboard() {
           <h3 className="font-semibold text-gray-900 mb-4">Quick Stats</h3>
           <div className="space-y-4">
             <div className="flex justify-between"><span className="text-sm text-gray-600">Total Inventory Value</span><span className="font-semibold">${stats.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span></div>
-            <div className="flex justify-between"><span className="text-sm text-gray-600">Pokémon</span><span className="font-semibold">{getAllPokemon().length}</span></div>
-            <div className="flex justify-between"><span className="text-sm text-gray-600">Sets</span><span className="font-semibold">{getAllSets().length}</span></div>
-            <div className="flex justify-between"><span className="text-sm text-gray-600">Categories</span><span className="font-semibold">{getAllCategories().length}</span></div>
-            <div className="flex justify-between"><span className="text-sm text-gray-600">Sellers</span><span className="font-semibold">{getAllSellers().length}</span></div>
+            <div className="flex justify-between"><span className="text-sm text-gray-600">Pokémon</span><span className="font-semibold">{allPokemon.length}</span></div>
+            <div className="flex justify-between"><span className="text-sm text-gray-600">Sets</span><span className="font-semibold">{allSets.length}</span></div>
+            <div className="flex justify-between"><span className="text-sm text-gray-600">Categories</span><span className="font-semibold">{allCategories.length}</span></div>
+            <div className="flex justify-between"><span className="text-sm text-gray-600">Sellers</span><span className="font-semibold">{allSellers.length}</span></div>
           </div>
         </div>
 

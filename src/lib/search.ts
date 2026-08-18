@@ -1,7 +1,8 @@
+// Search data access - uses Prisma (Neon DB)
+import { searchProducts as dbSearchProducts } from '@/lib/admin/db';
+import { getAllPokemon as dbGetAllPokemon } from '@/lib/admin/db';
+import { getAllSets as dbGetAllSets } from '@/lib/admin/db';
 import { Product, Pokemon, PokemonSet } from '@/types';
-import { seedProducts } from '@/seed/products';
-import { seedPokemon } from '@/seed/pokemon';
-import { seedSets } from '@/seed/sets';
 
 export interface SearchResult {
   products: Product[];
@@ -9,64 +10,43 @@ export interface SearchResult {
   sets: PokemonSet[];
 }
 
-export function searchAll(query: string): SearchResult {
+export async function searchAll(query: string): Promise<SearchResult> {
   const normalizedQuery = query.toLowerCase().trim();
 
-  const products = seedProducts.filter(product => {
-    return (
-      product.name.toLowerCase().includes(normalizedQuery) ||
-      (product.pokemon && product.pokemon.toLowerCase().includes(normalizedQuery)) ||
-      (product.set && product.set.toLowerCase().includes(normalizedQuery)) ||
-      (product.cardNumber && product.cardNumber.toLowerCase().includes(normalizedQuery)) ||
-      product.description.toLowerCase().includes(normalizedQuery)
-    );
-  });
+  const [products, pokemon, sets] = await Promise.all([
+    dbSearchProducts(query),
+    dbGetAllPokemon(),
+    dbGetAllSets(),
+  ]);
 
-  const pokemon = seedPokemon.filter(p => {
-    return (
-      p.name.toLowerCase().includes(normalizedQuery) ||
-      (p.description && p.description.toLowerCase().includes(normalizedQuery))
-    );
-  });
+  const filteredPokemon = pokemon.filter(p =>
+    p.name.toLowerCase().includes(normalizedQuery)
+  );
 
-  const sets = seedSets.filter(set => {
-    return (
-      set.name.toLowerCase().includes(normalizedQuery) ||
-      (set.series && set.series.toLowerCase().includes(normalizedQuery))
-    );
-  });
+  const filteredSets = sets.filter(s =>
+    s.name.toLowerCase().includes(normalizedQuery) ||
+    (s.series && s.series.toLowerCase().includes(normalizedQuery))
+  );
 
-  return { products, pokemon, sets };
+  return { products, pokemon: filteredPokemon, sets: filteredSets };
 }
 
 export function getSearchSuggestions(query: string): string[] {
-  const normalizedQuery = query.toLowerCase().trim();
+  if (!query || query.length < 2) return [];
+  const q = query.toLowerCase();
+
+  const pokemonNames = ['Charizard', 'Pikachu', 'Umbreon', 'Gengar', 'Mewtwo', 'Rayquaza', 'Eevee', 'Dragonite'];
+  const setNames = ['Evolving Skies', 'Scarlet & Violet', 'Pokemon 151', 'Lost Origin', 'Silver Tempest', 'Crown Zenith', 'Shining Fates', 'Vivid Voltage'];
+
   const suggestions: string[] = [];
 
-  seedProducts.forEach(product => {
-    if (product.name.toLowerCase().includes(normalizedQuery)) {
-      suggestions.push(product.name);
-    }
-    if (product.pokemon && product.pokemon.toLowerCase().includes(normalizedQuery)) {
-      suggestions.push(product.pokemon);
-    }
-    if (product.set && product.set.toLowerCase().includes(normalizedQuery)) {
-      suggestions.push(product.set);
-    }
+  pokemonNames.forEach(name => {
+    if (name.toLowerCase().includes(q)) suggestions.push(name);
   });
 
-  seedPokemon.forEach(p => {
-    if (p.name.toLowerCase().includes(normalizedQuery)) {
-      suggestions.push(p.name);
-    }
+  setNames.forEach(name => {
+    if (name.toLowerCase().includes(q)) suggestions.push(name);
   });
 
-  seedSets.forEach(set => {
-    if (set.name.toLowerCase().includes(normalizedQuery)) {
-      suggestions.push(set.name);
-    }
-  });
-
-  const uniqueSuggestions = [...new Set(suggestions)];
-  return uniqueSuggestions.slice(0, 10);
+  return [...new Set(suggestions)].slice(0, 10);
 }

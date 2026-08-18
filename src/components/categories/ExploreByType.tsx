@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { getCategories } from '@/lib/categories';
+import { getAllCategories } from '@/lib/categories';
 import { CategoryCard } from './CategoryCard';
 
-export function ExploreByType() {
-  const categories = getCategories();
+export async function ExploreByType() {
+  const categories = await getAllCategories();
 
   return (
     <section className="bg-white rounded-2xl shadow-sm py-12 px-8">

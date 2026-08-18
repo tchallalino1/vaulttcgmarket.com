@@ -3,7 +3,7 @@ import { getAllPokemon, createPokemon } from '@/lib/admin/store';
 import { Pokemon } from '@/types';
 
 export async function GET() {
-  const pokemon = getAllPokemon();
+  const pokemon = await getAllPokemon();
   return NextResponse.json(pokemon);
 }
 
@@ -19,6 +19,6 @@ export async function POST(request: Request) {
     pokemonTcgCardId: body.pokemonTcgCardId,
     popular: body.popular || false,
   };
-  const created = createPokemon(p);
+  const created = await createPokemon(p);
   return NextResponse.json(created, { status: 201 });
 }

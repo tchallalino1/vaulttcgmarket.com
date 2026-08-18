@@ -3,7 +3,7 @@ import { getAllCategories, createCategory } from '@/lib/admin/store';
 import { Category } from '@/types';
 
 export async function GET() {
-  const categories = getAllCategories();
+  const categories = await getAllCategories();
   return NextResponse.json(categories);
 }
 
@@ -17,6 +17,6 @@ export async function POST(request: Request) {
     description: body.description || '',
     productCount: Number(body.productCount) || 0,
   };
-  const created = createCategory(category);
+  const created = await createCategory(category);
   return NextResponse.json(created, { status: 201 });
 }

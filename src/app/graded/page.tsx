@@ -8,8 +8,8 @@ export const metadata = {
 
 const gradeFilters = ['All', 'PSA', 'CGC', 'BGS'];
 
-export default function GradedPage() {
-  const products = getGradedProducts();
+export default async function GradedPage() {
+  const products = await getGradedProducts();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id                  String   @id
+  name                String
+  slug                String   @unique
+  description         String   @default("")
+  productType         String   // single, graded, sealed, vintage, accessory
+  category            String   @default("singles")
+  price               Float
+  compareAtPrice      Float?
+  currency            String   @default("USD")
+  stock               Int      @default(0)
+  images              String[] @default([])
+  condition           String?
+  language            String?
+  set                 String?
+  setSlug             String?
+  cardNumber          String?
+  rarity              String?
+  pokemon             String?
+  pokemonSlug         String?
+  gradingCompany      String?
+  grade               String?
+  certificationNumber String?
+  pokemonTcgCardId    String?
+  priceChange         Float?
+  priceChangePercent  Float?
+  featured            Boolean  @default(false)
+  trending            Boolean  @default(false)
+  status              String   @default("published") // draft, published, archived
+  sellerId            String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  seller Seller? @relation(fields: [sellerId], references: [id])
+
+  @@index([slug])
+  @@index([productType])
+  @@index([pokemon])
+  @@index([setSlug])
+  @@index([featured])
+  @@index([trending])
+  @@index([status])
+}
+
+model Pokemon {
+  id              String   @id
+  name            String
+  slug            String   @unique
+  image           String   @default("")
+  description     String?
+  cardCount       Int      @default(0)
+  pokemonTcgCardId String?
+  popular         Boolean  @default(false)
+  displayOrder    Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slug])
+  @@index([popular])
+}
+
+model Set {
+  id           String   @id
+  name         String
+  slug         String   @unique
+  logo         String?
+  image        String?
+  releaseDate  String
+  totalCards   Int
+  series       String?
+  description  String?
+  featured     Boolean  @default(false)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model Category {
+  id           String   @id
+  name         String
+  slug         String   @unique
+  image        String   @default("")
+  description  String   @default("")
+  productCount Int      @default(0)
+  displayOrder Int      @default(0)
+  enabled      Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model Seller {
+  id          String   @id
+  name        String
+  slug        String   @unique
+  rating      Float    @default(0)
+  reviewCount Int      @default(0)
+  verified    Boolean  @default(false)
+  avatar      String?
+  email       String?
+  status      String   @default("active") // active, suspended, pending
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+
+  @@index([slug])
+}
+
+model Order {
+  id            String   @id
+  orderNumber   String   @unique
+  customerName  String
+  customerEmail String
+  status        String   @default("pending") // pending, paid, processing, shipped, delivered, cancelled, refunded
+  subtotal      Float
+  shipping      Float
+  tax           Float
+  total         Float
+  shippingAddr  Json?
+  paymentMethod String?
+  paymentStatus String   @default("pending")
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  items OrderItem[]
+
+  @@index([orderNumber])
+  @@index([status])
+  @@index([customerEmail])
+}
+
+model OrderItem {
+  id        String  @id
+  orderId   String
+  productId String
+  name      String
+  price     Float
+  quantity  Int
+  image     String?
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model HomepageContent {
+  id             String @id
+  key            String @unique
+  value          Json
+  updatedAt      DateTime @updatedAt
+}
+
+model ActivityLog {
+  id        String   @id
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  adminUser String   @default("admin")
+  createdAt DateTime @default(now())
+}

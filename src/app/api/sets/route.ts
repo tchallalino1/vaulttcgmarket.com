@@ -3,7 +3,7 @@ import { getAllSets, createSet } from '@/lib/admin/store';
 import { PokemonSet } from '@/types';
 
 export async function GET() {
-  const sets = getAllSets();
+  const sets = await getAllSets();
   return NextResponse.json(sets);
 }
 
@@ -19,6 +19,6 @@ export async function POST(request: Request) {
     totalCards: Number(body.totalCards) || 0,
     series: body.series,
   };
-  const created = createSet(set);
+  const created = await createSet(set);
   return NextResponse.json(created, { status: 201 });
 }

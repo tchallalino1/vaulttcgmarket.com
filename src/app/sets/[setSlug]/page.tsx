@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/products/ProductCard';
 
 export async function generateMetadata({ params }: { params: Promise<{ setSlug: string }> }) {
   const { setSlug } = await params;
-  const set = getSetBySlug(setSlug);
+  const set = await getSetBySlug(setSlug);
   if (!set) return { title: 'Set Not Found' };
   return {
     title: `${set.name} — Vault TCG Market`,
@@ -16,10 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ setSlug: 
 
 export default async function SetDetailPage({ params }: { params: Promise<{ setSlug: string }> }) {
   const { setSlug } = await params;
-  const set = getSetBySlug(setSlug);
+  const set = await getSetBySlug(setSlug);
   if (!set) notFound();
 
-  const products = getProductsBySet(set.slug);
+  const products = await getProductsBySet(set.slug);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

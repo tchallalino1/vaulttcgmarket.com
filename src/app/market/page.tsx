@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getAllProducts, getTrendingProducts } from '@/lib/products';
-import { getSets } from '@/lib/sets';
+import { getAllSets } from '@/lib/sets';
 import { ProductCard } from '@/components/products/ProductCard';
 
 export const metadata = {
@@ -8,10 +8,10 @@ export const metadata = {
   description: 'Real-time Pokémon TCG market data, price trends, and analytics.',
 };
 
-export default function MarketPage() {
-  const products = getAllProducts();
-  const trending = getTrendingProducts();
-  const sets = getSets();
+export default async function MarketPage() {
+  const products = await getAllProducts();
+  const trending = await getTrendingProducts();
+  const sets = await getAllSets();
 
   const totalProducts = products.length;
   const trendingCount = trending.length;

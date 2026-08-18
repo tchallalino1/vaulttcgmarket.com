@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import { getSets } from '@/lib/sets';
+import { getAllSets } from '@/lib/sets';
 
 export const metadata = {
   title: 'Pokémon TCG Sets — Vault TCG Market',
   description: 'Browse all Pokémon TCG sets available on Vault TCG Market.',
 };
 
-export default function SetsPage() {
-  const sets = getSets();
+export default async function SetsPage() {
+  const sets = await getAllSets();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

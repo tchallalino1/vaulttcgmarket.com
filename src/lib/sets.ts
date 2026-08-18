@@ -1,3 +1,9 @@
-import { seedSets, getSets, getSetBySlug } from '@/seed/sets';
-
-export { seedSets, getSets, getSetBySlug };
+// Sets data access - uses Prisma (Neon DB)
+export {
+  getAllSets,
+  getSetById,
+  getSetBySlug,
+  createSet,
+  updateSet,
+  deleteSet,
+} from '@/lib/admin/db';

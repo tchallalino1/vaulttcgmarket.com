@@ -8,8 +8,8 @@ export const metadata = {
 
 const accessoryCategories = ['Card Sleeves', 'Top Loaders', 'Binders', 'Display Cases', 'Storage'];
 
-export default function AccessoriesPage() {
-  const products = getAccessoryProducts();
+export default async function AccessoriesPage() {
+  const products = await getAccessoryProducts();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -3,7 +3,7 @@ import { getAllProducts, createProduct } from '@/lib/admin/store';
 import { Product } from '@/types';
 
 export async function GET() {
-  const products = getAllProducts();
+  const products = await getAllProducts();
   return NextResponse.json(products);
 }
 
@@ -40,6 +40,6 @@ export async function POST(request: Request) {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
-  const created = createProduct(product);
+  const created = await createProduct(product);
   return NextResponse.json(created, { status: 201 });
 }

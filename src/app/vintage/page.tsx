@@ -8,8 +8,8 @@ export const metadata = {
 
 const vintageEras = ['Base Set', 'Jungle', 'Fossil', 'Team Rocket', 'Neo Genesis', 'Gym Heroes'];
 
-export default function VintagePage() {
-  const products = getVintageProducts();
+export default async function VintagePage() {
+  const products = await getVintageProducts();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
