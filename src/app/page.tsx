@@ -4,6 +4,7 @@ import { PopularPokemon } from '@/components/pokemon/PopularPokemon';
 import { TrendingProducts } from '@/components/products/TrendingProducts';
 import { MarketInsights } from '@/components/market/MarketInsights';
 import { TrustSection } from '@/components/trust/TrustSection';
+import { HomepageReviews } from '@/components/reviews/HomepageReviews';
 
 export const metadata = {
   title: 'Vault TCG Market — Premium Pokémon TCG Marketplace',
@@ -19,6 +20,7 @@ export default function Home() {
         <PopularPokemon />
         <TrendingProducts />
         <MarketInsights />
+        <HomepageReviews />
         <TrustSection />
       </div>
     </div>
