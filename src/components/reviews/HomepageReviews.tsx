@@ -34,7 +34,7 @@ export function HomepageReviews() {
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {reviews.slice(0, 6).map(review => (
+        {reviews.slice(0, 3).map(review => (
           <div key={review.id} className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
             <div className="flex items-center gap-2 mb-3">
               <StarRating rating={review.rating} />
