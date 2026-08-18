@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/Badge';
 import { ProductCard } from '@/components/products/ProductCard';
 import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
 import { AddToCartSection } from '@/components/products/AddToCartSection';
+import { ReviewSection } from '@/components/reviews/ReviewSection';
 
 const productTypeLabels: Record<string, string> = {
   single: 'Raw',
@@ -418,6 +419,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             Market data reflects recent sales and listings across major TCG marketplaces. Prices may vary based on condition, grading, and seller.
           </p>
         </div>
+
+        {/* Customer Reviews */}
+        <ReviewSection productId={product.id} productName={product.name} />
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (

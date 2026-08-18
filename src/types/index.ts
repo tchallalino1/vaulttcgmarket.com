@@ -110,3 +110,19 @@ export interface SearchFilters {
   page?: number;
   limit?: number;
 }
+
+export interface Review {
+  id: string;
+  productId: string;
+  productName: string;
+  customerName: string;
+  customerEmail: string;
+  rating: number;
+  title?: string;
+  comment: string;
+  verified: boolean;
+  helpful: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}

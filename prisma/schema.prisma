@@ -155,6 +155,26 @@ model OrderItem {
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
+model Review {
+  id          String   @id
+  productId   String
+  productName String
+  customerName String
+  customerEmail String
+  rating      Int      // 1-5
+  title       String?
+  comment     String
+  verified    Boolean  @default(false)
+  helpful     Int      @default(0)
+  status      String   @default("approved") // approved, pending, rejected
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
+  @@index([rating])
+  @@index([status])
+}
+
 model HomepageContent {
   id             String @id
   key            String @unique

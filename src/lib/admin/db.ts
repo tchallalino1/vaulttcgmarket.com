@@ -3,7 +3,7 @@ import { seedProducts } from '@/seed/products';
 import { seedPokemon } from '@/seed/pokemon';
 import { seedSets } from '@/seed/sets';
 import { seedCategories } from '@/seed/categories';
-import { Product, Pokemon, PokemonSet, Category, Seller } from '@/types';
+import { Product, Pokemon, PokemonSet, Category, Seller, Review } from '@/types';
 
 // Check if database is properly configured
 function isDatabaseConfigured(): boolean {
@@ -356,3 +356,91 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
   return memProducts.filter(p => p.id !== product.id && (p.pokemon === product.pokemon || p.setSlug === product.setSlug || p.productType === product.productType)).slice(0, limit).map(mapProduct);
 }
 export async function getAllProductsRaw() { return getAllProducts(); }
+
+// ============ REVIEWS ============
+
+// In-memory reviews for fallback
+let memReviews: Review[] = [
+  { id: 'rev-001', productId: 'prod-002', productName: 'Umbreon VMAX', customerName: 'Alex M.', customerEmail: 'alex@example.com', rating: 5, title: 'Perfect condition!', comment: 'Card arrived in perfect condition. The grading was accurate and shipping was fast. Highly recommend this seller!', verified: true, helpful: 12, status: 'approved', createdAt: '2024-03-15T10:30:00Z', updatedAt: '2024-03-15T10:30:00Z' },
+  { id: 'rev-002', productId: 'prod-002', productName: 'Umbreon VMAX', customerName: 'Sarah K.', customerEmail: 'sarah@example.com', rating: 5, title: 'Stunning card', comment: 'The Umbreon VMAX is even more beautiful in person. Packaging was excellent and it arrived within 3 days.', verified: true, helpful: 8, status: 'approved', createdAt: '2024-03-10T14:20:00Z', updatedAt: '2024-03-10T14:20:00Z' },
+  { id: 'rev-003', productId: 'prod-001', productName: 'Charizard VMAX', customerName: 'Mike R.', customerEmail: 'mike@example.com', rating: 4, title: 'Great card, minor issue', comment: 'Card is great but the corner had a tiny whitening. Still happy with the purchase overall.', verified: true, helpful: 5, status: 'approved', createdAt: '2024-03-08T09:15:00Z', updatedAt: '2024-03-08T09:15:00Z' },
+  { id: 'rev-004', productId: 'prod-014', productName: 'PSA 10 Umbreon VMAX', customerName: 'James L.', customerEmail: 'james@example.com', rating: 5, title: 'Grail card achieved!', comment: 'Finally added the PSA 10 Umbreon VMAX to my collection. Authenticity verified and in perfect slab condition.', verified: true, helpful: 15, status: 'approved', createdAt: '2024-03-05T16:45:00Z', updatedAt: '2024-03-05T16:45:00Z' },
+  { id: 'rev-005', productId: 'prod-009', productName: 'Charizard ex', customerName: 'Lisa T.', customerEmail: 'lisa@example.com', rating: 5, title: 'Amazing pull!', comment: 'The Charizard ex from 151 is a must-have. Great price and fast shipping!', verified: false, helpful: 3, status: 'approved', createdAt: '2024-02-28T11:00:00Z', updatedAt: '2024-02-28T11:00:00Z' },
+  { id: 'rev-006', productId: 'prod-005', productName: 'Mewtwo VSTAR', customerName: 'Chris P.', customerEmail: 'chris@example.com', rating: 4, title: 'Solid card', comment: 'Good condition and fair price. Shipping took a bit longer than expected but card was well protected.', verified: true, helpful: 2, status: 'approved', createdAt: '2024-02-20T08:30:00Z', updatedAt: '2024-02-20T08:30:00Z' },
+];
+
+function mapReview(r: any): Review {
+  return {
+    id: r.id, productId: r.productId, productName: r.productName,
+    customerName: r.customerName, customerEmail: r.customerEmail,
+    rating: r.rating, title: r.title, comment: r.comment,
+    verified: r.verified || false, helpful: r.helpful || 0,
+    status: r.status || 'approved',
+    createdAt: r.createdAt?.toISOString?.() || r.createdAt || new Date().toISOString(),
+    updatedAt: r.updatedAt?.toISOString?.() || r.updatedAt || new Date().toISOString(),
+  };
+}
+
+export async function getReviewsByProduct(productId: string): Promise<Review[]> {
+  const prisma = await getPrisma();
+  if (prisma) {
+    try {
+      return (await prisma.review.findMany({
+        where: { productId, status: 'approved' },
+        orderBy: { createdAt: 'desc' },
+      })).map(mapReview);
+    } catch {}
+  }
+  return memReviews.filter(r => r.productId === productId && r.status === 'approved');
+}
+
+export async function getAllReviews(): Promise<Review[]> {
+  const prisma = await getPrisma();
+  if (prisma) {
+    try { return (await prisma.review.findMany({ orderBy: { createdAt: 'desc' } })).map(mapReview); } catch {}
+  }
+  return memReviews;
+}
+
+export async function getReviewStats(productId: string) {
+  const reviews = await getReviewsByProduct(productId);
+  const total = reviews.length;
+  const average = total > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / total : 0;
+  const distribution = [0, 0, 0, 0, 0];
+  reviews.forEach(r => { distribution[r.rating - 1]++; });
+  return { total, average: Math.round(average * 10) / 10, distribution };
+}
+
+export async function createReview(data: Partial<Review>): Promise<Review> {
+  const prisma = await getPrisma();
+  const review: Review = {
+    id: `rev-${Date.now()}`,
+    productId: data.productId || '',
+    productName: data.productName || '',
+    customerName: data.customerName || 'Anonymous',
+    customerEmail: data.customerEmail || '',
+    rating: data.rating || 5,
+    title: data.title,
+    comment: data.comment || '',
+    verified: data.verified || false,
+    helpful: 0,
+    status: 'approved',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  if (prisma) {
+    try {
+      const created = await prisma.review.create({ data: { ...review, createdAt: new Date(), updatedAt: new Date() } });
+      return mapReview(created);
+    } catch {}
+  }
+  memReviews.unshift(review);
+  return review;
+}
+
+export async function deleteReview(id: string): Promise<boolean> {
+  const prisma = await getPrisma();
+  if (prisma) { try { await prisma.review.delete({ where: { id } }); return true; } catch {} }
+  const idx = memReviews.findIndex(r => r.id === id);
+  if (idx === -1) return false; memReviews.splice(idx, 1); return true;
+}
