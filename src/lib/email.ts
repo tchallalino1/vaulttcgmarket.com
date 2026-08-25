@@ -1,6 +1,14 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resendClient: Resend | null = null;
+
+function getResendClient() {
+  if (!process.env.RESEND_API_KEY) return null;
+  if (!resendClient) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendClient;
+}
 
 interface OrderEmailData {
   orderNumber: string;
@@ -21,7 +29,8 @@ interface OrderEmailData {
 }
 
 export async function sendOrderConfirmation(data: OrderEmailData) {
-  if (!process.env.RESEND_API_KEY) {
+  const client = getResendClient();
+  if (!client) {
     console.log('RESEND_API_KEY not set — skipping email');
     return { success: false, message: 'Email service not configured' };
   }
@@ -128,7 +137,7 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
   `;
 
   try {
-    await resend.emails.send({
+    await client.emails.send({
       from: 'Vault TCG Market <orders@vaulttcgmarket.com>',
       to: data.customerEmail,
       subject: `Order Confirmed — #${data.orderNumber}`,
