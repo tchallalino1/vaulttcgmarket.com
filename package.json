@@ -13,7 +13,9 @@
     "db:seed": "npx tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "import:poke-collect": "npx tsx scripts/download-poke-collect-images.ts",
+    "import:poke-collect-sealed": "curl -X POST http://localhost:3000/api/import/poke-collect-sealed"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
