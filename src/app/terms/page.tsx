@@ -40,7 +40,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-xl font-semibold mb-3">5. Payments</h2>
-          <p className="text-gray-600 leading-relaxed">We accept major credit cards, PayPal, and other payment methods as displayed at checkout. All payments are processed securely. Vault TCG Market holds payment until the buyer confirms receipt.</p>
+          <p className="text-gray-600 leading-relaxed">We accept Cash App, Bitcoin, Ethereum, and Zelle as displayed at checkout. All payments are processed securely. Vault TCG Market holds payment until the buyer confirms receipt.</p>
         </section>
 
         <section>

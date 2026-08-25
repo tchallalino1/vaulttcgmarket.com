@@ -16,9 +16,9 @@ const faqSections: { category: string; icon: React.ReactNode; items: FAQItem[] }
       </svg>
     ),
     items: [
-      { question: 'How do I place an order?', answer: 'Browse our marketplace, add items to your cart, and proceed to checkout. You can pay with Visa, Mastercard, American Express, or PayPal.' },
+      { question: 'How do I place an order?', answer: 'Browse our marketplace, add items to your cart, and proceed to checkout. You can pay with Cash App, Bitcoin, Ethereum, or Zelle.' },
       { question: 'Can I cancel my order?', answer: 'You can cancel your order within 1 hour of placing it. After that, the order enters processing and cannot be cancelled. Contact support for assistance.' },
-      { question: 'What payment methods do you accept?', answer: 'We accept Visa, Mastercard, American Express, and PayPal. All payments are securely processed with 256-bit SSL encryption.' },
+      { question: 'What payment methods do you accept?', answer: 'We accept Cash App, Bitcoin (BTC), Ethereum (ETH), and Zelle. All payments are securely processed with 256-bit SSL encryption.' },
     ],
   },
   {
