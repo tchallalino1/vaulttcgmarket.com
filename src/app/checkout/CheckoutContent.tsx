@@ -100,43 +100,47 @@ export default function CheckoutContent() {
 
           {step === 'payment' && (
             <form onSubmit={handlePaymentSubmit} className="bg-white border border-gray-200 rounded-xl p-6 sm:p-8">
-              <h2 className="text-xl font-bold mb-6">PAYMENT METHOD</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                {[{ id: 'cashapp', label: 'Cash App', icon: '💲' }, { id: 'btc', label: 'Bitcoin', icon: '₿' }, { id: 'eth', label: 'Ethereum', icon: 'Ξ' }, { id: 'zelle', label: 'Zelle', icon: '💸' }].map(m => (
-                  <button key={m.id} type="button" onClick={() => setPaymentInfo(p => ({...p, method: m.id}))} className={`flex flex-col items-center gap-1 px-4 py-3 rounded-lg border-2 text-sm font-medium transition-colors ${paymentInfo.method === m.id ? 'border-purple-600 bg-purple-50 text-purple-700' : 'border-gray-200 hover:border-gray-300'}`}>
-                    <span className="text-xl">{m.icon}</span>{m.label}
+              <h2 className="text-xl font-bold mb-6">Payment Method</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+                {[
+                  { id: 'btc', label: 'Bitcoin', color: 'bg-orange-500' },
+                  { id: 'eth', label: 'Ethereum', color: 'bg-blue-500' },
+                  { id: 'cashapp', label: 'Cash App', color: 'bg-green-500' },
+                  { id: 'zelle', label: 'Zelle', color: 'bg-purple-500' },
+                ].map(m => (
+                  <button key={m.id} type="button" onClick={() => setPaymentInfo(p => ({...p, method: m.id}))} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 text-sm font-medium transition-all ${paymentInfo.method === m.id ? 'border-purple-500 bg-purple-50 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}>
+                    <div className={`w-8 h-8 rounded-full ${m.color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
+                      {{ btc: '₿', eth: 'Ξ', cashapp: '$', zelle: 'Z' }[m.id]}
+                    </div>
+                    <span className="text-gray-800">{m.label}</span>
                   </button>
                 ))}
               </div>
-              {paymentInfo.method === 'cashapp' && (
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <p className="text-sm text-gray-600 mb-3">Send payment to Cash App: <span className="font-bold text-purple-700">$VaultTCGMarket</span></p>
-                  <div><label className="block text-sm font-medium text-gray-700 mb-1">Your Cash App Tag *</label><input required type="text" placeholder="$yourcashtag" value={paymentInfo.cashTag} onChange={e => setPaymentInfo(p => ({...p, cashTag: e.target.value}))} className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none" /></div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Order Notes (Optional)</label>
+                <textarea placeholder="Any special instructions for your order..." rows={3} className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none resize-none" />
+              </div>
+
+              <button type="submit" className="w-full bg-purple-600 text-white py-4 rounded-xl font-semibold text-sm hover:bg-purple-700 transition-colors flex items-center justify-center gap-2">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
+                Place Order
+              </button>
+
+              <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-amber-900 text-sm mb-1">Payment Instructions</h4>
+                    <p className="text-sm text-amber-800 leading-relaxed">After placing your order, Vault TCG Market will contact you with payment instructions. You will receive an email confirmation and order number immediately.</p>
+                  </div>
                 </div>
-              )}
-              {paymentInfo.method === 'btc' && (
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <p className="text-sm text-gray-600 mb-2">Send Bitcoin to this wallet address:</p>
-                  <div className="bg-white border border-gray-200 rounded-lg p-3 mb-3 font-mono text-xs break-all">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</div>
-                  <div><label className="block text-sm font-medium text-gray-700 mb-1">Your Bitcoin Wallet Address *</label><input required type="text" placeholder="Enter your BTC address" value={paymentInfo.walletAddress} onChange={e => setPaymentInfo(p => ({...p, walletAddress: e.target.value}))} className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none" /></div>
-                </div>
-              )}
-              {paymentInfo.method === 'eth' && (
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <p className="text-sm text-gray-600 mb-2">Send Ethereum to this wallet address:</p>
-                  <div className="bg-white border border-gray-200 rounded-lg p-3 mb-3 font-mono text-xs break-all">0x742d35Cc6634C0532925a3b844Bc9e7595f2bD78</div>
-                  <div><label className="block text-sm font-medium text-gray-700 mb-1">Your Ethereum Wallet Address *</label><input required type="text" placeholder="Enter your ETH address" value={paymentInfo.walletAddress} onChange={e => setPaymentInfo(p => ({...p, walletAddress: e.target.value}))} className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none" /></div>
-                </div>
-              )}
-              {paymentInfo.method === 'zelle' && (
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <p className="text-sm text-gray-600 mb-3">Send Zelle payment to: <span className="font-bold text-purple-700">payments@vaulttcgmarket.com</span></p>
-                  <p className="text-xs text-gray-500">After sending, please confirm your email used for Zelle.</p>
-                </div>
-              )}
-              <div className="flex gap-3 mt-6">
-                <button type="button" onClick={() => setStep('shipping')} className="flex-1 border border-gray-300 text-gray-700 py-3.5 rounded-lg font-medium text-sm hover:bg-gray-50 transition-colors">BACK</button>
-                <button type="submit" className="flex-1 bg-red-600 text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-red-700 transition-colors">REVIEW ORDER</button>
+              </div>
+
+              <div className="mt-4">
+                <button type="button" onClick={() => setStep('shipping')} className="w-full border border-gray-300 text-gray-700 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 transition-colors">Back to Shipping</button>
               </div>
             </form>
           )}
@@ -171,7 +175,7 @@ export default function CheckoutContent() {
               </div>
               <div className="flex gap-3">
                 <button type="button" onClick={() => setStep('payment')} className="flex-1 border border-gray-300 text-gray-700 py-3.5 rounded-lg font-medium text-sm hover:bg-gray-50 transition-colors">BACK</button>
-                <button onClick={handlePlaceOrder} className="flex-1 bg-red-600 text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-red-700 transition-colors">PLACE ORDER — ${total.toFixed(2)}</button>
+                <button onClick={handlePlaceOrder} className="flex-1 bg-purple-600 text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-purple-700 transition-colors">PLACE ORDER — ${total.toFixed(2)}</button>
               </div>
             </div>
           )}
