@@ -8,14 +8,39 @@ import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
 type CheckoutStep = 'shipping' | 'payment' | 'review' | 'confirmation';
 
 export default function CheckoutContent() {
-  const { items, subtotal, shipping, tax, total, clearCart } = useCart();
+  const { items, subtotal, shipping, total, clearCart } = useCart();
   const [step, setStep] = useState<CheckoutStep>('shipping');
   const [shippingInfo, setShippingInfo] = useState({ firstName: '', lastName: '', email: '', phone: '', address: '', city: '', state: '', zip: '', country: 'US' });
   const [paymentInfo, setPaymentInfo] = useState({ method: 'cashapp', cashTag: '', walletAddress: '' });
+  const [orderNumber, setOrderNumber] = useState('');
 
   const handleShippingSubmit = (e: React.FormEvent) => { e.preventDefault(); setStep('payment'); };
   const handlePaymentSubmit = (e: React.FormEvent) => { e.preventDefault(); setStep('review'); };
-  const handlePlaceOrder = () => { clearCart(); setStep('confirmation'); };
+  const handlePlaceOrder = async () => {
+    const orderNum = `VLT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    setOrderNumber(orderNum);
+
+    // Send confirmation email
+    try {
+      await fetch('/api/email/order-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderNumber: orderNum,
+          customerName: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
+          customerEmail: shippingInfo.email,
+          items: items.map(item => ({ name: item.product.name, price: item.product.price, quantity: item.quantity })),
+          subtotal,
+          shipping,
+          total,
+          shippingAddress: shippingInfo,
+        }),
+      });
+    } catch {}
+
+    clearCart();
+    setStep('confirmation');
+  };
 
   if (items.length === 0 && step !== 'confirmation') {
     return (
@@ -35,7 +60,7 @@ export default function CheckoutContent() {
         </div>
         <h1 className="text-3xl font-bold mb-3">ORDER CONFIRMED!</h1>
         <p className="text-gray-500 mb-2">Thank you for your purchase.</p>
-        <p className="text-sm text-gray-400 mb-8">Order #VLT-{Math.random().toString(36).substring(2, 8).toUpperCase()} — Confirmation sent to {shippingInfo.email || 'your email'}</p>
+        <p className="text-sm text-gray-400 mb-8">Order #{orderNumber} — Confirmation sent to {shippingInfo.email || 'your email'}</p>
         <div className="bg-gray-50 rounded-xl p-6 mb-8 text-left">
           <h3 className="font-semibold mb-3">What&apos;s Next</h3>
           <div className="space-y-3 text-sm text-gray-600">
