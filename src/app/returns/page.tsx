@@ -54,9 +54,9 @@ export default function ReturnsPage() {
           <section className="bg-white border border-gray-200 rounded-xl p-6">
             <h2 className="text-xl font-semibold mb-4">Refund Timeline</h2>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between py-2 border-b border-gray-100"><span className="text-gray-600">Cash App</span><span className="font-medium">1-2 business days</span></div>
-              <div className="flex justify-between py-2 border-b border-gray-100"><span className="text-gray-600">Bitcoin / Ethereum</span><span className="font-medium">3-5 business days</span></div>
-              <div className="flex justify-between py-2 border-b border-gray-100"><span className="text-gray-600">Zelle</span><span className="font-medium">1-2 business days</span></div>
+              <div className="flex justify-between py-2 border-b border-gray-100"><span className="text-gray-600">Apple Pay / Cash App / Chime</span><span className="font-medium">1-2 business days</span></div>
+              <div className="flex justify-between py-2 border-b border-gray-100"><span className="text-gray-600">Zelle / Wise / Revolut / GCash</span><span className="font-medium">1-2 business days</span></div>
+              <div className="flex justify-between py-2 border-b border-gray-100"><span className="text-gray-600">Bitcoin / Bank Transfer</span><span className="font-medium">3-5 business days</span></div>
               <div className="flex justify-between py-2"><span className="text-gray-600">Store Credit</span><span className="font-medium">Immediate</span></div>
             </div>
           </section>

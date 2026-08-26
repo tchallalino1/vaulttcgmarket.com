@@ -138,7 +138,7 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
 
   try {
     await client.emails.send({
-      from: 'Vault TCG Market <orders@vaulttcgmarket.com>',
+      from: 'Vault TCG Market <onboarding@resend.dev>',
       to: data.customerEmail,
       subject: `Order Confirmed — #${data.orderNumber}`,
       html,

@@ -1,12 +1,9 @@
+import { NextResponse } from 'next/server';
 import { pokeCollectSealedProducts } from '@/seed/poke-collect-sealed-products';
 import { createProduct } from '@/lib/admin/db';
 import { Product } from '@/types';
 
-export default async function handler(req: any, res: any) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export async function POST() {
   try {
     const products = pokeCollectSealedProducts;
     const results: Product[] = [];
@@ -21,13 +18,13 @@ export default async function handler(req: any, res: any) {
       results.push(created);
     }
 
-    return res.status(200).json({
+    return NextResponse.json({
       success: true,
       message: `Imported ${results.length} sealed products from poke-collect.com`,
       products: results,
     });
   } catch (error) {
     console.error('Import error:', error);
-    return res.status(500).json({ error: 'Failed to import products' });
+    return NextResponse.json({ error: 'Failed to import products' }, { status: 500 });
   }
 }

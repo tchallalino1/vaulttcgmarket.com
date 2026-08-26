@@ -128,10 +128,12 @@ export function Footer() {
 
             {/* Payment icons */}
             <div className="flex items-center gap-3">
+              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-black">Apple Pay</span>
               <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-green-900">Cash App</span>
               <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-orange-900">BTC</span>
-              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-blue-900">ETH</span>
               <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-purple-900">Zelle</span>
+              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-blue-900">Chime</span>
+              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-green-800">Wise</span>
             </div>
 
             {/* Social media links */}

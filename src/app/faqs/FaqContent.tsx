@@ -6,9 +6,9 @@ const faqCategories = [
   {
     title: 'Orders & Payments',
     questions: [
-      { q: 'How do I place an order?', a: 'Browse our marketplace, add items to your cart, and proceed to checkout. You can pay with Cash App, Bitcoin, Ethereum, or Zelle.' },
+      { q: 'How do I place an order?', a: 'Browse our marketplace, add items to your cart, and proceed to checkout. You can pay with Apple Pay, Cash App, Chime, Bitcoin, Zelle, Wise, Bank Transfer, Revolut, or GCash.' },
       { q: 'Can I cancel my order?', a: 'Orders can be cancelled within 1 hour of placement if they haven\'t been processed by the seller. Contact support for assistance.' },
-      { q: 'What payment methods do you accept?', a: 'We accept Cash App, Bitcoin (BTC), Ethereum (ETH), and Zelle. All transactions are securely processed.' },
+      { q: 'What payment methods do you accept?', a: 'We accept Apple Pay, Cash App, Chime, Bitcoin, Zelle, Wise Transfer, Bank Transfer, Revolut, and GCash. All transactions are securely processed.' },
       { q: 'Is my payment information secure?', a: 'Yes. All payments are processed through encrypted, secure channels. We never store your wallet addresses or payment credentials.' },
     ],
   },
@@ -42,7 +42,7 @@ const faqCategories = [
     questions: [
       { q: 'How do I become a seller?', a: 'Create an account, verify your identity, and start listing your cards. There are no upfront fees — you only pay a small commission when items sell.' },
       { q: 'What are the selling fees?', a: 'We charge a competitive commission on each sale. Visit our Sell page for detailed pricing information.' },
-      { q: 'How do I get paid?', a: 'Payments are sent directly to your Cash App, Bitcoin, Ethereum, or Zelle account within 2-3 business days of delivery confirmation.' },
+      { q: 'How do I get paid?', a: 'Payments are sent directly to your chosen payment account within 2-3 business days of delivery confirmation.' },
     ],
   },
   {

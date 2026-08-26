@@ -128,14 +128,19 @@ export default function CheckoutContent() {
               <h2 className="text-xl font-bold mb-6">Payment Method</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
                 {[
-                  { id: 'btc', label: 'Bitcoin', color: 'bg-orange-500' },
-                  { id: 'eth', label: 'Ethereum', color: 'bg-blue-500' },
-                  { id: 'cashapp', label: 'Cash App', color: 'bg-green-500' },
-                  { id: 'zelle', label: 'Zelle', color: 'bg-purple-500' },
+                  { id: 'applepay', label: 'Apple Pay', color: 'bg-black', icon: '🍎' },
+                  { id: 'cashapp', label: 'Cash App', color: 'bg-green-500', icon: '$' },
+                  { id: 'chime', label: 'Chime', color: 'bg-teal-500', icon: 'C' },
+                  { id: 'btc', label: 'Bitcoin', color: 'bg-orange-500', icon: '₿' },
+                  { id: 'zelle', label: 'Zelle', color: 'bg-purple-600', icon: 'Z' },
+                  { id: 'wise', label: 'Wise Transfer', color: 'bg-green-400', icon: 'W' },
+                  { id: 'bank', label: 'Bank Transfer', color: 'bg-blue-700', icon: '🏦' },
+                  { id: 'revolut', label: 'Revolut', color: 'bg-blue-500', icon: 'R' },
+                  { id: 'gcash', label: 'GCash', color: 'bg-blue-400', icon: 'G' },
                 ].map(m => (
                   <button key={m.id} type="button" onClick={() => setPaymentInfo(p => ({...p, method: m.id}))} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 text-sm font-medium transition-all ${paymentInfo.method === m.id ? 'border-purple-500 bg-purple-50 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}>
                     <div className={`w-8 h-8 rounded-full ${m.color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
-                      {{ btc: '₿', eth: 'Ξ', cashapp: '$', zelle: 'Z' }[m.id]}
+                      {m.icon}
                     </div>
                     <span className="text-gray-800">{m.label}</span>
                   </button>
@@ -180,7 +185,7 @@ export default function CheckoutContent() {
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex justify-between items-start mb-2"><span className="text-sm font-semibold">Payment</span><button type="button" onClick={() => setStep('payment')} className="text-xs text-purple-600 hover:text-purple-700">Edit</button></div>
-                  <p className="text-sm text-gray-600">{{ cashapp: 'Cash App ($VaultTCGMarket)', btc: 'Bitcoin (BTC)', eth: 'Ethereum (ETH)', zelle: 'Zelle' }[paymentInfo.method] || paymentInfo.method}</p>
+                  <p className="text-sm text-gray-600">{{ applepay: 'Apple Pay', cashapp: 'Cash App', chime: 'Chime', btc: 'Bitcoin', zelle: 'Zelle', wise: 'Wise Transfer', bank: 'Bank Transfer', revolut: 'Revolut', gcash: 'GCash' }[paymentInfo.method] || paymentInfo.method}</p>
                 </div>
               </div>
               <h3 className="font-semibold text-sm mb-3">ORDER ITEMS</h3>
