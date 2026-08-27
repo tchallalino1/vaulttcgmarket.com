@@ -134,19 +134,19 @@ export default function CheckoutContent() {
               <h2 className="text-xl font-bold mb-6">Payment Method</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
                 {[
-                  { id: 'applepay', label: 'Apple Pay', color: 'bg-black', icon: '🍎' },
-                  { id: 'cashapp', label: 'Cash App', color: 'bg-green-500', icon: '$' },
-                  { id: 'chime', label: 'Chime', color: 'bg-teal-500', icon: 'C' },
-                  { id: 'btc', label: 'Bitcoin', color: 'bg-orange-500', icon: '₿' },
-                  { id: 'zelle', label: 'Zelle', color: 'bg-purple-600', icon: 'Z' },
-                  { id: 'wise', label: 'Wise Transfer', color: 'bg-green-400', icon: 'W' },
-                  { id: 'bank', label: 'Bank Transfer', color: 'bg-blue-700', icon: '🏦' },
-                  { id: 'revolut', label: 'Revolut', color: 'bg-blue-500', icon: 'R' },
-                  { id: 'gcash', label: 'GCash', color: 'bg-blue-400', icon: 'G' },
+                  { id: 'applepay', label: 'Apple Pay', logo: <svg viewBox="0 0 50 20" className="h-5 w-auto"><text x="0" y="16" fontFamily="system-ui" fontSize="16" fontWeight="700" fill="#000"> Pay</text><text x="0" y="16" fontFamily="system-ui" fontSize="18" fontWeight="700" fill="#000"> Apple</text></svg>, bg: 'bg-white' },
+                  { id: 'cashapp', label: 'Cash App', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="6" fill="#00D632"/><text x="12" y="17" textAnchor="middle" fontFamily="Arial" fontSize="14" fontWeight="bold" fill="white">$</text></svg>, bg: 'bg-white' },
+                  { id: 'chime', label: 'Chime', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="12" fill="#25C65A"/><text x="12" y="17" textAnchor="middle" fontFamily="Arial" fontSize="15" fontWeight="bold" fill="white">C</text></svg>, bg: 'bg-white' },
+                  { id: 'venmo', label: 'Venmo', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="6" fill="#3D95CE"/><text x="12" y="17" textAnchor="middle" fontFamily="Arial" fontSize="14" fontWeight="bold" fill="white">V</text></svg>, bg: 'bg-white' },
+                  { id: 'zelle', label: 'Zelle', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="6" fill="#6D1ED4"/><text x="12" y="17" textAnchor="middle" fontFamily="Arial" fontSize="14" fontWeight="bold" fill="white">Z</text></svg>, bg: 'bg-white' },
+                  { id: 'paypal', label: 'PayPal', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="6" fill="#003087"/><text x="12" y="17" textAnchor="middle" fontFamily="Arial" fontSize="11" fontWeight="bold" fill="#009CDE">PP</text></svg>, bg: 'bg-white' },
+                  { id: 'btc', label: 'Bitcoin', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="12" fill="#F7931A"/><text x="12" y="17" textAnchor="middle" fontFamily="Arial" fontSize="14" fontWeight="bold" fill="white">₿</text></svg>, bg: 'bg-white' },
+                  { id: 'bank', label: 'Bank Transfer', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="6" fill="#1E3A5F"/><path d="M12 4L6 8v2h12V8l-6-4zM6 12v5h12v-5H6z" fill="white"/></svg>, bg: 'bg-white' },
+                  { id: 'gcash', label: 'GCash', logo: <svg viewBox="0 0 24 24" className="w-5 h-5"><rect width="24" height="24" rx="6" fill="#007DFE"/><text x="12" y="17" textAnchor="middle" fontFamily="Arial" fontSize="10" fontWeight="bold" fill="white">G</text></svg>, bg: 'bg-white' },
                 ].map(m => (
                   <button key={m.id} type="button" onClick={() => setPaymentInfo(p => ({...p, method: m.id}))} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 text-sm font-medium transition-all ${paymentInfo.method === m.id ? 'border-purple-500 bg-purple-50 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}>
-                    <div className={`w-8 h-8 rounded-full ${m.color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
-                      {m.icon}
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {m.logo}
                     </div>
                     <span className="text-gray-800">{m.label}</span>
                   </button>

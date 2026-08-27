@@ -127,11 +127,12 @@ export function Footer() {
             </p>
 
             {/* Payment icons */}
-            <div className="flex items-center gap-3">
-              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-black">Apple Pay</span>
-              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-green-900">Cash App</span>
-              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-orange-900">BTC</span>
-              <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-purple-900">Zelle</span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-black flex items-center gap-1"><svg viewBox="0 0 24 24" className="w-3 h-3"><rect width="24" height="24" rx="4" fill="#000"/><text x="12" y="17" textAnchor="middle" fontSize="12" fill="white">A</text></svg> Pay</span>
+              <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-[#00D632] flex items-center gap-1"><svg viewBox="0 0 24 24" className="w-3 h-3"><rect width="24" height="24" rx="4" fill="#00D632"/><text x="12" y="17" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">$</text></svg> Cash App</span>
+              <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-[#F7931A] flex items-center gap-1"><svg viewBox="0 0 24 24" className="w-3 h-3"><rect width="24" height="24" rx="12" fill="#F7931A"/><text x="12" y="17" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">₿</text></svg> Bitcoin</span>
+              <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-[#003087] flex items-center gap-1"><svg viewBox="0 0 24 24" className="w-3 h-3"><rect width="24" height="24" rx="4" fill="#003087"/><text x="12" y="17" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#009CDE">PP</text></svg> PayPal</span>
+              <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-[#6D1ED4] flex items-center gap-1"><svg viewBox="0 0 24 24" className="w-3 h-3"><rect width="24" height="24" rx="4" fill="#6D1ED4"/><text x="12" y="17" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">Z</text></svg> Zelle</span>
               <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-blue-900">Chime</span>
               <span className="rounded border border-gray-700 bg-white px-2 py-0.5 text-xs font-bold text-green-800">Wise</span>
             </div>
