@@ -16,30 +16,36 @@ export default function CheckoutContent() {
 
   const handleShippingSubmit = (e: React.FormEvent) => { e.preventDefault(); setStep('payment'); };
   const handlePaymentSubmit = (e: React.FormEvent) => { e.preventDefault(); setStep('review'); };
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = () => {
     const orderNum = `VLT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    const email = shippingInfo.email;
+    const name = `${shippingInfo.firstName} ${shippingInfo.lastName}`;
+    const orderItems = items.map(item => ({ name: item.product.name, price: item.product.price, quantity: item.quantity }));
+    const orderSubtotal = subtotal;
+    const orderShipping = shipping;
+    const orderTotal = total;
+    const address = { ...shippingInfo };
+
+    // Save state before clearing
     setOrderNumber(orderNum);
-
-    // Send confirmation email
-    try {
-      await fetch('/api/email/order-confirmation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orderNumber: orderNum,
-          customerName: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
-          customerEmail: shippingInfo.email,
-          items: items.map(item => ({ name: item.product.name, price: item.product.price, quantity: item.quantity })),
-          subtotal,
-          shipping,
-          total,
-          shippingAddress: shippingInfo,
-        }),
-      });
-    } catch {}
-
     clearCart();
     setStep('confirmation');
+
+    // Send email AFTER state updates (fire and forget)
+    fetch('/api/email/order-confirmation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderNumber: orderNum,
+        customerName: name,
+        customerEmail: email,
+        items: orderItems,
+        subtotal: orderSubtotal,
+        shipping: orderShipping,
+        total: orderTotal,
+        shippingAddress: address,
+      }),
+    }).then(r => r.json()).then(d => console.log('Email sent:', d)).catch(e => console.error('Email failed:', e));
   };
 
   if (items.length === 0 && step !== 'confirmation') {
