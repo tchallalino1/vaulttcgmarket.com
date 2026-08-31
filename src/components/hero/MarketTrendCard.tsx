@@ -21,7 +21,7 @@ export function MarketTrendCard() {
   const areaPath = `${linePath} L ${width - padding},${height - padding} L ${padding},${height - padding} Z`;
 
   return (
-    <div className="w-[220px] bg-white rounded-xl shadow-lg shadow-black/10 p-4">
+    <div className="w-[180px] sm:w-[220px] bg-white rounded-xl shadow-lg shadow-black/10 p-3 sm:p-4">
       <p className="text-[10px] uppercase tracking-widest text-gray-400 font-medium mb-1">
         Market Trend
       </p>

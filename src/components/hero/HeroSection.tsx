@@ -121,7 +121,7 @@ export function HeroSection() {
                 </div>
 
                 {/* Market trend card */}
-                <div className="absolute -bottom-6 -left-8 sm:-left-12 z-20">
+                <div className="absolute -bottom-6 left-0 sm:-left-12 z-20">
                   <MarketTrendCard />
                 </div>
               </div>
