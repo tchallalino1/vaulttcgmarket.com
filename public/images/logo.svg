@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" fill="none">
+  <defs>
+    <linearGradient id="purpleGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="darkGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1035"/>
+      <stop offset="100%" stop-color="#0d0a1a"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Card icon -->
+  <g transform="translate(10, 15)">
+    <rect x="30" y="5" width="55" height="80" rx="6" fill="url(#darkGrad)" stroke="#7c3aed" stroke-width="1.5" opacity="0.8"/>
+    <rect x="15" y="10" width="55" height="80" rx="6" fill="url(#darkGrad)" stroke="#7c3aed" stroke-width="1.5" opacity="0.9"/>
+    <rect x="0" y="15" width="55" height="80" rx="8" fill="url(#purpleGrad)" stroke="#a855f7" stroke-width="2"/>
+    <!-- Keyhole -->
+    <circle cx="27.5" cy="45" r="8" fill="white"/>
+    <rect x="24" y="48" width="7" height="16" rx="2" fill="white"/>
+    <!-- Glow effect -->
+    <circle cx="27.5" cy="45" r="18" fill="none" stroke="#a855f7" stroke-width="1" opacity="0.3"/>
+  </g>
+  
+  <!-- VAULT text -->
+  <text x="110" y="65" font-family="Arial, sans-serif" font-size="52" font-weight="900" fill="#1a1035" letter-spacing="-1">VAULT</text>
+  
+  <!-- TCG badge -->
+  <rect x="290" y="30" width="60" height="35" rx="8" fill="url(#purpleGrad)"/>
+  <text x="320" y="55" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="white" text-anchor="middle">TCG</text>
+  
+  <!-- Decorative line -->
+  <line x1="110" y1="78" x2="370" y2="78" stroke="url(#purpleGrad)" stroke-width="2" opacity="0.4"/>
+  
+  <!-- MARKET text -->
+  <text x="240" y="100" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#1a1035" text-anchor="middle" letter-spacing="12">MARKET</text>
+</svg>

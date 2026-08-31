@@ -36,14 +36,8 @@ export function Header() {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex shrink-0 items-center gap-1">
-            <div className="flex flex-col leading-none">
-              <div className="flex items-center gap-1.5">
-                <span className="text-lg font-bold tracking-tight text-gray-900">VAULT</span>
-                <span className="rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white">TCG</span>
-              </div>
-              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-500">MARKET</span>
-            </div>
+          <Link href="/" className="flex shrink-0 items-center">
+            <img src="/images/logo.svg" alt="Vault TCG Market" className="h-9 w-auto" />
           </Link>
 
           {/* Desktop navigation */}
@@ -155,10 +149,7 @@ export function Header() {
             <div className="flex h-full flex-col overflow-y-auto">
               {/* Panel header */}
               <div className="flex items-center justify-between border-b border-gray-200 px-4 py-4">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-lg font-bold tracking-tight text-gray-900">VAULT</span>
-                  <span className="rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white">TCG</span>
-                </div>
+                <img src="/images/logo.svg" alt="Vault TCG Market" className="h-8 w-auto" />
                 <button
                   type="button"
                   className="rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"

@@ -38,14 +38,8 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 py-12 sm:py-16 md:grid-cols-2 lg:grid-cols-5">
           {/* Logo & description */}
           <div className="col-span-2 lg:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-1.5">
-              <div className="flex flex-col leading-none">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-lg font-bold tracking-tight text-white">VAULT</span>
-                  <span className="rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white">TCG</span>
-                </div>
-                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-500">MARKET</span>
-              </div>
+            <Link href="/" className="inline-flex">
+              <img src="/images/logo.svg" alt="Vault TCG Market" className="h-9 w-auto brightness-0 invert" />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-500">
               Your trusted marketplace for authentic Pokémon cards, graded collectibles, sealed products, and more.
