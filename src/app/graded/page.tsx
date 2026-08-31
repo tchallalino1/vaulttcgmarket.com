@@ -1,15 +1,33 @@
-import { getGradedProducts } from '@/lib/products';
+'use client';
+import { useState, useEffect } from 'react';
 import { ProductCard } from '@/components/products/ProductCard';
+import { Product } from '@/types';
 
-export const metadata = {
-  title: 'Graded Pokémon Cards — Vault TCG Market',
-  description: 'Professionally graded Pokémon cards from PSA, CGC, BGS and more.',
-};
+const filters = [
+  { label: 'All', value: '' },
+  { label: 'PSA', value: 'PSA' },
+  { label: 'CGC', value: 'CGC' },
+  { label: 'BGS', value: 'BGS' },
+];
 
-const gradeFilters = ['All', 'PSA', 'CGC', 'BGS'];
+export default function GradedPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState('');
 
-export default async function GradedPage() {
-  const products = await getGradedProducts();
+  useEffect(() => {
+    fetch('/api/products')
+      .then(r => r.json())
+      .then((data: Product[]) => {
+        setProducts(data.filter(p => p.productType === 'graded'));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const filtered = activeFilter
+    ? products.filter(p => p.gradingCompany === activeFilter)
+    : products;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -19,31 +37,35 @@ export default async function GradedPage() {
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
-        {gradeFilters.map((filter) => (
-          <span
-            key={filter}
-            className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              filter === 'All'
-                ? 'bg-purple-600 text-white'
+        {filters.map((cat) => (
+          <button
+            key={cat.value}
+            onClick={() => setActiveFilter(cat.value)}
+            className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              activeFilter === cat.value
+                ? 'bg-purple-600 text-white shadow-sm'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            {filter}
-          </span>
+            {cat.label}
+          </button>
         ))}
       </div>
 
-      <p className="text-sm text-gray-500 mb-8">{products.length} graded cards available</p>
+      <p className="text-sm text-gray-500 mb-8">{filtered.length} graded cards available</p>
 
-      {products.length > 0 ? (
+      {loading ? (
+        <div className="text-center py-20 text-gray-400">Loading...</div>
+      ) : filtered.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="text-gray-500 text-lg">No graded cards available right now.</p>
+          <p className="text-gray-500 text-lg">No graded cards found for this filter.</p>
+          <button onClick={() => setActiveFilter('')} className="mt-4 text-purple-600 hover:text-purple-700 text-sm font-medium">Clear filter</button>
         </div>
       )}
     </div>

@@ -1,15 +1,35 @@
-import { getVintageProducts } from '@/lib/products';
+'use client';
+import { useState, useEffect } from 'react';
 import { ProductCard } from '@/components/products/ProductCard';
+import { Product } from '@/types';
 
-export const metadata = {
-  title: 'Vintage Pokémon Cards — Vault TCG Market',
-  description: 'Classic vintage Pokémon cards from the original sets.',
-};
+const filters = [
+  { label: 'All', value: '' },
+  { label: 'Base Set', value: 'base set' },
+  { label: 'Jungle', value: 'jungle' },
+  { label: 'Fossil', value: 'fossil' },
+  { label: 'Team Rocket', value: 'team rocket' },
+  { label: 'Neo Genesis', value: 'neo genesis' },
+];
 
-const vintageEras = ['Base Set', 'Jungle', 'Fossil', 'Team Rocket', 'Neo Genesis', 'Gym Heroes'];
+export default function VintagePage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState('');
 
-export default async function VintagePage() {
-  const products = await getVintageProducts();
+  useEffect(() => {
+    fetch('/api/products')
+      .then(r => r.json())
+      .then((data: Product[]) => {
+        setProducts(data.filter(p => p.productType === 'vintage'));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const filtered = activeFilter
+    ? products.filter(p => p.set?.toLowerCase().includes(activeFilter))
+    : products;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -19,27 +39,35 @@ export default async function VintagePage() {
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
-        {vintageEras.map((era) => (
-          <span
-            key={era}
-            className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors"
+        {filters.map((cat) => (
+          <button
+            key={cat.value}
+            onClick={() => setActiveFilter(cat.value)}
+            className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              activeFilter === cat.value
+                ? 'bg-amber-500 text-white shadow-sm'
+                : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
+            }`}
           >
-            {era}
-          </span>
+            {cat.label}
+          </button>
         ))}
       </div>
 
-      <p className="text-sm text-gray-500 mb-8">{products.length} vintage cards available</p>
+      <p className="text-sm text-gray-500 mb-8">{filtered.length} vintage cards available</p>
 
-      {products.length > 0 ? (
+      {loading ? (
+        <div className="text-center py-20 text-gray-400">Loading...</div>
+      ) : filtered.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="text-gray-500 text-lg">No vintage cards available right now.</p>
+          <p className="text-gray-500 text-lg">No vintage cards found for this filter.</p>
+          <button onClick={() => setActiveFilter('')} className="mt-4 text-purple-600 hover:text-purple-700 text-sm font-medium">Clear filter</button>
         </div>
       )}
     </div>
