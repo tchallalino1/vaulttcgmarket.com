@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import { useCart } from '@/lib/cart-context';
 
 const NAV_LINKS = [
+  { label: 'Singles', href: '/pokemon' },
+  { label: 'One Piece', href: '/pokemon', badge: 'NEW' },
   { label: 'Pokémon', href: '/pokemon', hasDropdown: true },
   { label: 'Graded', href: '/graded' },
   { label: 'Sealed', href: '/sealed' },
@@ -44,7 +46,7 @@ export function Header() {
           <nav className="hidden lg:flex lg:items-center lg:gap-1">
             {NAV_LINKS.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-purple-600 ${
                   pathname === link.href
@@ -53,6 +55,9 @@ export function Header() {
                 }`}
               >
                 {link.label}
+                {'badge' in link && link.badge && (
+                  <span className="text-[9px] font-bold text-purple-600 bg-purple-100 px-1.5 py-0.5 rounded-full ml-0.5">{link.badge}</span>
+                )}
                 {link.hasDropdown && (
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -182,6 +187,8 @@ export function Header() {
               <p className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2 mt-1">Shop</p>
               <div className="space-y-1 mb-6">
                 {[
+                  { label: 'Singles', href: '/pokemon', icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></svg> },
+                  { label: 'One Piece', href: '/pokemon', icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" /><path d="M8 12s1.5 2 4 2 4-2 4-2" /><circle cx="9" cy="9" r="1" fill="currentColor" /><circle cx="15" cy="9" r="1" fill="currentColor" /></svg>, badge: 'NEW' },
                   { label: 'Pokémon', href: '/pokemon', icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10" /><path d="M8 12h8M12 8v8" /></svg>, hasChevron: true },
                   { label: 'Graded', href: '/graded', icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> },
                   { label: 'Sealed', href: '/sealed', icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 21V9" /></svg> },
