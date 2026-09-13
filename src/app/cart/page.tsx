@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart-context';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal, shipping, tax, total, totalItems } = useCart();
@@ -46,7 +46,7 @@ export default function CartPage() {
               <div key={product.id} className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 flex gap-4">
                 <div className="w-20 h-28 sm:w-24 sm:h-32 rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-purple-200 flex-shrink-0 relative">
                   {product.pokemonTcgCardId ? (
-                    <Image src={getCardImageUrl(product.pokemonTcgCardId, 'small')} alt={product.name} fill className="object-contain" unoptimized />
+                    <Image src={getTcgdexImageUrl(product.pokemonTcgCardId)} alt={product.name} fill className="object-contain" unoptimized />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-2xl">🃏</div>
                   )}

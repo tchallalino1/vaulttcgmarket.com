@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/Badge';
 import { ProductCard } from '@/components/products/ProductCard';
 import { AddToCartSection } from '@/components/products/AddToCartSection';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 
 const productTypeLabels: Record<string, string> = {
   single: 'Raw', graded: 'Graded', sealed: 'Sealed', vintage: 'Vintage', accessory: 'Accessory',
@@ -54,7 +55,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-100">
                 {product.pokemonTcgCardId ? (
                   <img
-                    src={`https://images.pokemontcg.io/${product.pokemonTcgCardId.split('-')[0]}/${product.pokemonTcgCardId.split('-').slice(1).join('-')}.png`}
+                    src={getTcgdexImageUrl(product.pokemonTcgCardId)}
                     alt={product.name}
                     className="w-full h-full object-contain p-2"
                   />

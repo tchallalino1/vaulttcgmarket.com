@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart-context';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 
 type CheckoutStep = 'shipping' | 'payment' | 'review' | 'confirmation';
 
@@ -199,7 +199,7 @@ export default function CheckoutContent() {
                 {items.map(({ product, quantity }) => (
                   <div key={product.id} className="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">
                     <div className="w-12 h-16 rounded bg-gray-100 overflow-hidden flex-shrink-0 relative">
-                      {product.pokemonTcgCardId ? <Image src={getCardImageUrl(product.pokemonTcgCardId, 'small')} alt={product.name} fill className="object-contain" unoptimized /> : <div className="w-full h-full flex items-center justify-center text-sm">🃏</div>}
+                      {product.pokemonTcgCardId ? <Image src={getTcgdexImageUrl(product.pokemonTcgCardId)} alt={product.name} fill className="object-contain" unoptimized /> : <div className="w-full h-full flex items-center justify-center text-sm">🃏</div>}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium line-clamp-1">{product.name}</p>
@@ -225,7 +225,7 @@ export default function CheckoutContent() {
               {items.map(({ product, quantity }) => (
                 <div key={product.id} className="flex items-center gap-2 text-sm">
                   <div className="w-8 h-10 rounded bg-gray-100 overflow-hidden flex-shrink-0 relative">
-                    {product.pokemonTcgCardId ? <Image src={getCardImageUrl(product.pokemonTcgCardId, 'small')} alt={product.name} fill className="object-contain" unoptimized /> : <div className="w-full h-full flex items-center justify-center text-xs">🃏</div>}
+                    {product.pokemonTcgCardId ? <Image src={getTcgdexImageUrl(product.pokemonTcgCardId)} alt={product.name} fill className="object-contain" unoptimized /> : <div className="w-full h-full flex items-center justify-center text-xs">🃏</div>}
                   </div>
                   <span className="flex-1 line-clamp-1 text-gray-600">{product.name} × {quantity}</span>
                   <span className="font-medium">${(product.price * quantity).toFixed(2)}</span>

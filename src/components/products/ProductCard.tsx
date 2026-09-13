@@ -5,7 +5,7 @@ import { Product } from '@/types';
 import { PriceDisplay } from '@/components/ui/PriceDisplay';
 import { Badge } from '@/components/ui/Badge';
 import { WishlistButton } from '@/components/ui/WishlistButton';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 import { useState } from 'react';
 
 interface ProductCardProps {
@@ -23,9 +23,11 @@ export function ProductCard({ product, compact = false }: ProductCardProps) {
     ? `${product.gradingCompany} ${product.grade}`
     : product.condition || null;
 
-  const imageUrl = product.pokemonTcgCardId
-    ? getCardImageUrl(product.pokemonTcgCardId, 'small')
-    : null;
+  const imageUrl = product.images && product.images.length > 0
+    ? product.images[0]
+    : product.pokemonTcgCardId
+      ? getTcgdexImageUrl(product.pokemonTcgCardId)
+      : null;
 
   return (
     <div className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md hover:border-gray-200 transition-all duration-200 flex flex-col">

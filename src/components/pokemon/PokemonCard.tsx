@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Pokemon } from '@/types';
 import { useState } from 'react';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -12,7 +12,7 @@ interface PokemonCardProps {
 export function PokemonCard({ pokemon }: PokemonCardProps) {
   const [imgError, setImgError] = useState(false);
   const imageUrl = pokemon.pokemonTcgCardId
-    ? getCardImageUrl(pokemon.pokemonTcgCardId, 'small')
+    ? getTcgdexImageUrl(pokemon.pokemonTcgCardId)
     : null;
 
   return (

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getPopularPokemon } from '@/lib/pokemon';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 import { Pokemon } from '@/types';
 
 const pokemonCardCounts: Record<string, string> = {
@@ -61,7 +61,7 @@ export function PopularPokemon() {
 function PokemonCircle({ pokemon }: { pokemon: Pokemon }) {
   const [imgError, setImgError] = useState(false);
   const imageUrl = pokemon.pokemonTcgCardId
-    ? getCardImageUrl(pokemon.pokemonTcgCardId, 'small')
+    ? getTcgdexImageUrl(pokemon.pokemonTcgCardId)
     : null;
   const cardCount = pokemonCardCounts[pokemon.name] || `${pokemon.cardCount.toLocaleString()}+`;
 

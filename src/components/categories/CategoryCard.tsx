@@ -3,16 +3,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Category } from '@/types';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 
 interface CategoryCardProps {
   category: Category;
 }
 
 const categoryCardIds: Record<string, string> = {
-  singles: 'swsh8-215',      // Umbreon VMAX - popular modern card
+  singles: 'swsh7-215',      // Umbreon VMAX - popular modern card
   graded: 'base1-4',         // Base Set Charizard - classic graded icon
-  sealed: 'swsh12-50',       // Crown Zenith card
+  sealed: 'swsh12.5-109',    // Crown Zenith card
   vintage: 'base1-4',        // Base Set Charizard - vintage icon
   accessories: '',           // No API image for accessories
 };
@@ -27,7 +27,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
   else if (category.slug === 'accessories') href = '/accessories';
 
   const cardId = categoryCardIds[category.slug];
-  const imageUrl = cardId ? getCardImageUrl(cardId, 'small') : null;
+  const imageUrl = cardId ? getTcgdexImageUrl(cardId) : null;
 
   return (
     <Link href={href} className="group block">

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getFeaturedProduct } from '@/lib/products';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 import { MarketTrendCard } from './MarketTrendCard';
 import { TrustFeatures } from './TrustFeatures';
 
@@ -12,9 +12,11 @@ export function HeroSection() {
   useEffect(() => { getFeaturedProduct().then(setFeatured); }, []);
   const [imgError, setImgError] = useState(false);
 
-  const imageUrl = featured?.pokemonTcgCardId
-    ? getCardImageUrl(featured.pokemonTcgCardId, 'large')
-    : null;
+  const imageUrl = featured?.images && featured.images.length > 0
+    ? featured.images[0]
+    : featured?.pokemonTcgCardId
+      ? getTcgdexImageUrl(featured.pokemonTcgCardId)
+      : null;
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#0f0517] via-[#1a0a2e] to-[#0a0a1a] min-h-[580px]">

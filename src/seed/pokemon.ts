@@ -28,7 +28,7 @@ export const seedPokemon: Pokemon[] = [
     image: '/pokemon/umbreon.png',
     description: 'The Moonlight Pokémon. A sleek dark-type Eeveelution with a devoted fanbase.',
     cardCount: 312,
-    pokemonTcgCardId: 'swsh8-215',
+    pokemonTcgCardId: 'swsh7-215',
     popular: true,
   },
   {
@@ -38,7 +38,7 @@ export const seedPokemon: Pokemon[] = [
     image: '/pokemon/gengar.png',
     description: 'The Shadow Pokémon. A mischievous ghost-poison type with an iconic grin.',
     cardCount: 428,
-    pokemonTcgCardId: 'swsh11-157',
+    pokemonTcgCardId: 'swsh8-157',
     popular: true,
   },
   {
@@ -58,7 +58,7 @@ export const seedPokemon: Pokemon[] = [
     image: '/pokemon/rayquaza.png',
     description: 'The Sky High Pokémon. A legendary dragon-flying type that reigns over the sky.',
     cardCount: 276,
-    pokemonTcgCardId: 'swsh8-218',
+    pokemonTcgCardId: 'swsh7-218',
     popular: true,
   },
   {
@@ -68,7 +68,7 @@ export const seedPokemon: Pokemon[] = [
     image: '/pokemon/eevee.png',
     description: 'The Evolution Pokémon. A normal-type with the unique ability to evolve into multiple forms.',
     cardCount: 512,
-    pokemonTcgCardId: 'swsh8-189',
+    pokemonTcgCardId: 'swsh7-189',
     popular: true,
   },
   {

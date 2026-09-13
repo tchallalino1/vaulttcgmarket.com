@@ -3,14 +3,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { getAllCategories } from '@/lib/categories';
-import { getCardImageUrl } from '@/lib/pokemon-tcg/images';
+import { getTcgdexImageUrl } from '@/lib/tcgdex';
 import { useEffect } from 'react';
 import { Category } from '@/types';
 
 const categoryCardIds: Record<string, string> = {
-  singles: 'sv3pt5-174',
+  singles: 'sv03.5-174',
   graded: 'base1-4',
-  sealed: 'swsh12-50',
+  sealed: 'swsh12.5-109',
   vintage: 'base1-4',
   accessories: '',
 };
@@ -73,7 +73,7 @@ function CategoryCard({ category }: { category: Category }) {
   const [imgError, setImgError] = useState(false);
   const href = categoryHrefs[category.slug] || '/products';
   const cardId = categoryCardIds[category.slug];
-  const imageUrl = cardId ? getCardImageUrl(cardId, 'small') : null;
+  const imageUrl = cardId ? getTcgdexImageUrl(cardId) : null;
   const iconPath = categoryIcons[category.slug] || categoryIcons.singles;
 
   return (
