@@ -98,14 +98,11 @@ export function HeroSection() {
                     }}
                   >
                     {imageUrl && !imgError ? (
-                      <Image
+                      <img
                         src={imageUrl}
                         alt={featured.name}
-                        fill
-                        className="object-contain"
-                        priority
+                        className="absolute inset-0 w-full h-full object-contain"
                         onError={() => setImgError(true)}
-                        unoptimized
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

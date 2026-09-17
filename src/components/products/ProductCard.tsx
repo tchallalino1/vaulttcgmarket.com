@@ -34,14 +34,12 @@ export function ProductCard({ product, compact = false }: ProductCardProps) {
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative aspect-[3/4] bg-gray-50 overflow-hidden">
           {imageUrl && !imgError ? (
-            <Image
+            <img
               src={imageUrl}
               alt={product.name}
-              fill
-              className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 640px) 150px, (max-width: 768px) 180px, 200px"
+              className="absolute inset-0 w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
               onError={() => setImgError(true)}
-              unoptimized
+              loading="lazy"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-purple-200">

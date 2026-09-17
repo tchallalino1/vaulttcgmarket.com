@@ -82,13 +82,11 @@ function CategoryCard({ category }: { category: Category }) {
         {/* Image area */}
         <div className="relative h-[160px] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
           {imageUrl && !imgError ? (
-            <Image
+            <img
               src={imageUrl}
               alt={category.name}
-              fill
-              className="object-cover group-hover:scale-110 transition-transform duration-500"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               onError={() => setImgError(true)}
-              unoptimized
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">

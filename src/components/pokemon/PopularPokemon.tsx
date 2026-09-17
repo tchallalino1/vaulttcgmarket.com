@@ -71,14 +71,11 @@ function PokemonCircle({ pokemon }: { pokemon: Pokemon }) {
       <div className="relative w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-full p-[2px] bg-gradient-to-br from-purple-500 via-purple-600 to-fuchsia-600 mb-3 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-300">
         <div className="w-full h-full rounded-full overflow-hidden bg-[#120f24] flex items-center justify-center">
           {imageUrl && !imgError ? (
-            <Image
+            <img
               src={imageUrl}
               alt={pokemon.name}
-              width={100}
-              height={100}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               onError={() => setImgError(true)}
-              unoptimized
             />
           ) : (
             <span className="text-2xl md:text-3xl font-bold text-purple-400/60">{pokemon.name.charAt(0)}</span>

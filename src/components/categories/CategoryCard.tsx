@@ -34,14 +34,11 @@ export function CategoryCard({ category }: CategoryCardProps) {
       <div className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-200">
         <div className="h-[150px] bg-gray-100 flex items-center justify-center group-hover:bg-gray-50 transition-colors relative overflow-hidden">
           {imageUrl && !imgError ? (
-            <Image
+            <img
               src={imageUrl}
               alt={category.name}
-              width={120}
-              height={168}
-              className="object-contain group-hover:scale-105 transition-transform duration-300"
+              className="w-[120px] h-auto object-contain group-hover:scale-105 transition-transform duration-300"
               onError={() => setImgError(true)}
-              unoptimized
             />
           ) : (
             <div className="text-gray-300">
