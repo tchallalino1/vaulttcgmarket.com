@@ -64,7 +64,7 @@ export function getTcgdexImageUrl(cardId: string): string {
   const setId = parts[0];
   const number = parts.slice(1).join('-');
   const series = getSeries(setId);
-  return `https://assets.tcgdex.net/en/${series}/${setId}/${number}`;
+  return `https://assets.tcgdex.net/en/${series}/${setId}/${number}.png`;
 }
 
 // Get set logo URL

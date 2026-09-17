@@ -12,7 +12,7 @@ interface CategoryCardProps {
 const categoryCardIds: Record<string, string> = {
   singles: 'swsh7-215',      // Umbreon VMAX - popular modern card
   graded: 'base1-4',         // Base Set Charizard - classic graded icon
-  sealed: 'swsh12.5-109',    // Crown Zenith card
+  sealed: 'swsh12.5-019',    // Crown Zenith Charizard VSTAR
   vintage: 'base1-4',        // Base Set Charizard - vintage icon
   accessories: '',           // No API image for accessories
 };
