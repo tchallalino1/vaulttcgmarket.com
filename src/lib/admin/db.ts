@@ -34,7 +34,7 @@ export async function getAllProducts(): Promise<Product[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').order('created_at', { ascending: false });
-    return (data || []).map(mapProduct);
+    if (data && data.length > 0) return data.map(mapProduct);
   }
   return memProducts;
 }
@@ -143,7 +143,7 @@ export async function getAllPokemon(): Promise<Pokemon[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('pokemon').select('*').order('name');
-    return (data || []).map(mapPokemon);
+    if (data && data.length > 0) return data.map(mapPokemon);
   }
   return memPokemon;
 }
@@ -167,7 +167,7 @@ export async function getPopularPokemon(): Promise<Pokemon[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('pokemon').select('*').eq('popular', true).order('name');
-    return (data || []).map(mapPokemon);
+    if (data && data.length > 0) return data.map(mapPokemon);
   }
   return memPokemon.filter(p => p.popular);
 }
@@ -205,7 +205,7 @@ export async function getAllSets(): Promise<PokemonSet[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('sets').select('*').order('release_date', { ascending: false });
-    return (data || []).map(mapSet);
+    if (data && data.length > 0) return data.map(mapSet);
   }
   return memSets;
 }
@@ -261,7 +261,7 @@ export async function getAllCategories(): Promise<Category[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('categories').select('*').order('name');
-    return (data || []).map(mapCategory);
+    if (data && data.length > 0) return data.map(mapCategory);
   }
   return memCategories;
 }
@@ -315,7 +315,7 @@ export async function getAllSellers(): Promise<Seller[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('sellers').select('*').order('name');
-    return (data || []).map(mapSeller);
+    if (data && data.length > 0) return data.map(mapSeller);
   }
   return memSellers;
 }
@@ -332,7 +332,7 @@ export async function getReviewsByProduct(productId: string): Promise<Review[]> 
   const client = sb();
   if (client) {
     const { data } = await client.from('reviews').select('*').eq('product_id', productId).eq('status', 'approved').order('created_at', { ascending: false });
-    return (data || []).map(mapReview);
+    if (data && data.length > 0) return data.map(mapReview);
   }
   return memReviews.filter(r => r.productId === productId);
 }
@@ -341,7 +341,7 @@ export async function getAllReviews(): Promise<Review[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('reviews').select('*').order('created_at', { ascending: false });
-    return (data || []).map(mapReview);
+    if (data && data.length > 0) return data.map(mapReview);
   }
   return memReviews;
 }
@@ -380,7 +380,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
   if (client) {
     const q = query.toLowerCase();
     const { data } = await client.from('products').select('*').or(`name.ilike.%${q}%,pokemon.ilike.%${q}%,set_name.ilike.%${q}%,card_number.ilike.%${q}%,description.ilike.%${q}%`).order('created_at', { ascending: false });
-    return (data || []).map(mapProduct);
+    if (data && data.length > 0) return data.map(mapProduct);
   }
   const q = query.toLowerCase();
   return memProducts.filter(p =>
@@ -394,7 +394,7 @@ export async function getProductsByType(type: string): Promise<Product[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').eq('product_type', type).order('created_at', { ascending: false });
-    return (data || []).map(mapProduct);
+    if (data && data.length > 0) return data.map(mapProduct);
   }
   return memProducts.filter(p => p.productType === type);
 }
@@ -403,7 +403,7 @@ export async function getProductsByPokemon(pokemonName: string): Promise<Product
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').eq('pokemon', pokemonName).order('created_at', { ascending: false });
-    return (data || []).map(mapProduct);
+    if (data && data.length > 0) return data.map(mapProduct);
   }
   return memProducts.filter(p => p.pokemon === pokemonName);
 }
@@ -412,7 +412,7 @@ export async function getProductsBySet(setSlug: string): Promise<Product[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').eq('set_slug', setSlug).order('created_at', { ascending: false });
-    return (data || []).map(mapProduct);
+    if (data && data.length > 0) return data.map(mapProduct);
   }
   return memProducts.filter(p => p.setSlug === setSlug);
 }
@@ -427,7 +427,7 @@ export async function getTrendingProducts(): Promise<Product[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').eq('trending', true).order('created_at', { ascending: false });
-    return (data || []).map(mapProduct);
+    if (data && data.length > 0) return data.map(mapProduct);
   }
   return memProducts.filter(p => p.trending);
 }
@@ -436,7 +436,7 @@ export async function getFeaturedProduct(): Promise<Product | undefined> {
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').eq('featured', true).limit(1).single();
-    return data ? mapProduct(data) : undefined;
+    if (data) return mapProduct(data);
   }
   return memProducts.find(p => p.featured);
 }
@@ -445,7 +445,7 @@ export async function getDeals(): Promise<Product[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').not('compare_at_price', 'is', null).order('created_at', { ascending: false });
-    return (data || []).filter((p: any) => p.compare_at_price && p.compare_at_price > p.price).map(mapProduct);
+    if (data && data.length > 0) return data.filter((p: any) => p.compare_at_price && p.compare_at_price > p.price).map(mapProduct);
   }
   return memProducts.filter(p => p.compareAtPrice && p.compareAtPrice > p.price);
 }
@@ -459,7 +459,7 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').neq('id', product.id).or(`pokemon.eq.${product.pokemon || ''},set_slug.eq.${product.setSlug || ''},product_type.eq.${product.productType}`).limit(limit).order('created_at', { ascending: false });
-    return (data || []).map(mapProduct);
+    if (data && data.length > 0) return data.map(mapProduct);
   }
   return memProducts.filter(p => p.id !== product.id && (p.pokemon === product.pokemon || p.setSlug === product.setSlug || p.productType === product.productType)).slice(0, limit);
 }
