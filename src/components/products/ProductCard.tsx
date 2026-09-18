@@ -23,11 +23,19 @@ export function ProductCard({ product, compact = false }: ProductCardProps) {
     ? `${product.gradingCompany} ${product.grade}`
     : product.condition || null;
 
-  const imageUrl = product.pokemonTcgCardId
-    ? getTcgdexImageUrl(product.pokemonTcgCardId)
-    : product.images && product.images.length > 0 && product.images[0].startsWith('http')
-      ? product.images[0]
-      : null;
+  // Category-aware image selection
+  const imageUrl = (() => {
+    // Use uploaded product images first (if valid HTTP URL)
+    if (product.images && product.images.length > 0 && product.images[0].startsWith('http')) {
+      return product.images[0];
+    }
+    // For singles, graded, vintage — use TCGdex card image
+    if ((product.productType === 'single' || product.productType === 'graded' || product.productType === 'vintage') && product.pokemonTcgCardId) {
+      return getTcgdexImageUrl(product.pokemonTcgCardId);
+    }
+    // For sealed and accessories — no card image (show placeholder)
+    return null;
+  })();
 
   return (
     <div className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-md hover:border-gray-200 transition-all duration-200 flex flex-col">
@@ -42,8 +50,26 @@ export function ProductCard({ product, compact = false }: ProductCardProps) {
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-purple-200">
-              <span className="text-3xl opacity-30">🃏</span>
+            <div className={`w-full h-full flex flex-col items-center justify-center ${product.productType === 'sealed' ? 'bg-gradient-to-br from-green-50 to-emerald-100' : product.productType === 'accessory' ? 'bg-gradient-to-br from-rose-50 to-pink-100' : 'bg-gradient-to-br from-purple-100 to-purple-200'}`}>
+              {product.productType === 'sealed' ? (
+                <>
+                  <svg className="w-16 h-16 text-green-300 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <path d="M3 9h18M9 3v18" />
+                  </svg>
+                  <span className="text-xs font-medium text-green-600">{product.name}</span>
+                </>
+              ) : product.productType === 'accessory' ? (
+                <>
+                  <svg className="w-16 h-16 text-rose-300 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <path d="M12 8v8M8 12h8" />
+                  </svg>
+                  <span className="text-xs font-medium text-rose-600">{product.name}</span>
+                </>
+              ) : (
+                <span className="text-3xl opacity-30">🃏</span>
+              )}
             </div>
           )}
           <div className="absolute top-1.5 left-1.5">
