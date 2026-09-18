@@ -23,10 +23,10 @@ export function ProductCard({ product, compact = false }: ProductCardProps) {
     ? `${product.gradingCompany} ${product.grade}`
     : product.condition || null;
 
-  const imageUrl = product.images && product.images.length > 0
-    ? product.images[0]
-    : product.pokemonTcgCardId
-      ? getTcgdexImageUrl(product.pokemonTcgCardId)
+  const imageUrl = product.pokemonTcgCardId
+    ? getTcgdexImageUrl(product.pokemonTcgCardId)
+    : product.images && product.images.length > 0 && product.images[0].startsWith('http')
+      ? product.images[0]
       : null;
 
   return (

@@ -12,10 +12,10 @@ export function HeroSection() {
   useEffect(() => { getFeaturedProduct().then(setFeatured); }, []);
   const [imgError, setImgError] = useState(false);
 
-  const imageUrl = featured?.images && featured.images.length > 0
-    ? featured.images[0]
-    : featured?.pokemonTcgCardId
-      ? getTcgdexImageUrl(featured.pokemonTcgCardId)
+  const imageUrl = featured?.pokemonTcgCardId
+    ? getTcgdexImageUrl(featured.pokemonTcgCardId)
+    : featured?.images && featured.images.length > 0 && featured.images[0].startsWith('http')
+      ? featured.images[0]
       : null;
 
   return (
