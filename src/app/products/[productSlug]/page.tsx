@@ -53,7 +53,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <div className="flex justify-center md:justify-start">
             <div className="relative w-[280px] md:w-full md:max-w-[340px]">
               <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-100">
-                {product.pokemonTcgCardId ? (
+                {product.images && product.images.length > 0 && (product.images[0].startsWith('http') || product.images[0].startsWith('/')) ? (
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-2"
+                  />
+                ) : product.pokemonTcgCardId ? (
                   <img
                     src={getTcgdexImageUrl(product.pokemonTcgCardId)}
                     alt={product.name}

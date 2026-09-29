@@ -25,8 +25,8 @@ export function ProductCard({ product, compact = false }: ProductCardProps) {
 
   // Category-aware image selection
   const imageUrl = (() => {
-    // Use uploaded product images first (if valid HTTP URL)
-    if (product.images && product.images.length > 0 && product.images[0].startsWith('http')) {
+    // Use uploaded product images first (HTTP URL or relative path)
+    if (product.images && product.images.length > 0 && (product.images[0].startsWith('http') || product.images[0].startsWith('/'))) {
       return product.images[0];
     }
     // For singles, graded, vintage — use TCGdex card image

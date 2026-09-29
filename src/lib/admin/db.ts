@@ -34,7 +34,12 @@ export async function getAllProducts(): Promise<Product[]> {
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').order('created_at', { ascending: false });
-    if (data && data.length > 0) return data.map(mapProduct);
+    if (data && data.length > 0) {
+      const supabaseProducts = data.map(mapProduct);
+      const supabaseIds = new Set(supabaseProducts.map(p => p.id));
+      const onlyInMemory = memProducts.filter(p => !supabaseIds.has(p.id));
+      return [...supabaseProducts, ...onlyInMemory];
+    }
   }
   return memProducts;
 }
@@ -49,7 +54,7 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
   const client = sb();
   if (client) {
     const { data } = await client.from('products').select('*').eq('slug', slug).single();
-    return data ? mapProduct(data) : undefined;
+    if (data) return mapProduct(data);
   }
   return memProducts.find(p => p.slug === slug);
 }
@@ -72,8 +77,21 @@ export async function createProduct(data: Partial<Product>): Promise<Product> {
     featured: data.featured || false, trending: data.trending || false,
   };
   if (client) {
-    const { data: created } = await client.from('products').insert(record).select().single();
-    return mapProduct(created);
+    try {
+      const { data: created, error } = await client.from('products').insert(record).select().single();
+      if (error) {
+        console.error('Supabase insert error:', error);
+        const product = mapProduct(record);
+        memProducts.unshift(product);
+        return product;
+      }
+      return mapProduct(created);
+    } catch (e) {
+      console.error('Supabase insert failed, using in-memory:', e);
+      const product = mapProduct(record);
+      memProducts.unshift(product);
+      return product;
+    }
   }
   return mapProduct(record);
 }
