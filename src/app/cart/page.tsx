@@ -45,7 +45,9 @@ export default function CartPage() {
             {items.map(({ product, quantity }) => (
               <div key={product.id} className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 flex gap-4">
                 <div className="w-20 h-28 sm:w-24 sm:h-32 rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-purple-200 flex-shrink-0 relative">
-                  {product.pokemonTcgCardId ? (
+                  {product.images && product.images.length > 0 && (product.images[0].startsWith('http') || product.images[0].startsWith('/')) ? (
+                    <Image src={product.images[0]} alt={product.name} fill className="object-contain" unoptimized />
+                  ) : product.pokemonTcgCardId ? (
                     <Image src={getTcgdexImageUrl(product.pokemonTcgCardId)} alt={product.name} fill className="object-contain" unoptimized />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-2xl">🃏</div>
