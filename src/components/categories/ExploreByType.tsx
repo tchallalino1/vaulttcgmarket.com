@@ -3,16 +3,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { getAllCategories } from '@/lib/categories';
-import { getTcgdexImageUrl } from '@/lib/tcgdex';
 import { useEffect } from 'react';
 import { Category } from '@/types';
 
-const categoryCardIds: Record<string, string> = {
-  singles: 'swsh7-215',       // Umbreon VMAX - popular modern card
-  graded: 'base1-4',          // Base Set Charizard - classic graded icon
-  sealed: 'swsh12.5-019',     // Crown Zenith Charizard VSTAR
-  vintage: 'base1-4',         // Base Set Charizard - vintage icon
-  accessories: '',            // No API image for accessories
+const categoryImages: Record<string, string> = {
+  singles: '/products/destined-rivals-booster-bundle.jpg',
+  graded: '/products/japanese-30th-celebration-premium-deck-set.jpg',
+  sealed: '/products/mega-evolution-pitch-black-booster-box.jpg',
+  vintage: '/products/crown-zenith-booster-bundle.jpg',
+  accessories: '',
 };
 
 const categoryIcons: Record<string, string> = {
@@ -72,8 +71,8 @@ export function ExploreByType() {
 function CategoryCard({ category }: { category: Category }) {
   const [imgError, setImgError] = useState(false);
   const href = categoryHrefs[category.slug] || '/products';
-  const cardId = categoryCardIds[category.slug];
-  const imageUrl = cardId ? getTcgdexImageUrl(cardId) : null;
+  const cardImage = categoryImages[category.slug];
+  const imageUrl = cardImage || null;
   const iconPath = categoryIcons[category.slug] || categoryIcons.singles;
 
   return (
