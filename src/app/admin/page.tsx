@@ -1,19 +1,20 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getProductStats, getAllProducts, getAllPokemon, getAllSets, getAllCategories, getAllSellers } from '@/lib/admin/store';
+import { getProductStats, getAllProducts, getAllPokemon, getAllSets, getAllCategories, getAllSellers, getOrderStats } from '@/lib/admin/db';
 
 export const metadata: Metadata = {
   title: 'Dashboard — Vault TCG Admin',
 };
 
 export default async function AdminDashboard() {
-  const [stats, allProducts, allPokemon, allSets, allCategories, allSellers] = await Promise.all([
+  const [stats, allProducts, allPokemon, allSets, allCategories, allSellers, orderStats] = await Promise.all([
     getProductStats(),
     getAllProducts(),
     getAllPokemon(),
     getAllSets(),
     getAllCategories(),
     getAllSellers(),
+    getOrderStats(),
   ]);
   const products = allProducts;
   const lowStockProducts = products.filter((p: any) => p.stock > 0 && p.stock <= 3).slice(0, 5);

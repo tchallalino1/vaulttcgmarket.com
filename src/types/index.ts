@@ -126,3 +126,41 @@ export interface Review {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Order {
+  id: string;
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  status: 'pending' | 'paid' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
+  paymentMethod?: string;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  subtotal: number;
+  shipping: number;
+  total: number;
+  shippingAddress: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  items: OrderItem[];
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OrderItem {
+  id: string;
+  orderId: string;
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string;
+}

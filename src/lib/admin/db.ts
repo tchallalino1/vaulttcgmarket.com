@@ -1,5 +1,5 @@
 import { getSupabase } from '@/lib/supabase';
-import { Product, Pokemon, PokemonSet, Category, Seller, Review } from '@/types';
+import { Product, Pokemon, PokemonSet, Category, Seller, Review, Order, OrderItem } from '@/types';
 import { seedProducts } from '@/seed/products';
 import { seedPokemon } from '@/seed/pokemon';
 import { seedSets } from '@/seed/sets';
@@ -389,6 +389,129 @@ export async function deleteReview(id: string): Promise<boolean> {
   const client = sb(); if (!client) return false;
   const { error } = await client.from('reviews').delete().eq('id', id);
   return !error;
+}
+
+// ============ ORDERS ============
+
+// In-memory orders store
+let memOrders: Order[] = [];
+
+function mapOrder(o: any): Order {
+  return {
+    id: o.id,
+    orderNumber: o.order_number,
+    customerName: o.customer_name,
+    customerEmail: o.customer_email,
+    customerPhone: o.customer_phone,
+    status: o.status || 'pending',
+    paymentMethod: o.payment_method,
+    paymentStatus: o.payment_status || 'pending',
+    subtotal: Number(o.subtotal),
+    shipping: Number(o.shipping),
+    total: Number(o.total),
+    shippingAddress: o.shipping_addr || { firstName: '', lastName: '', email: '', address: '', city: '', state: '', zip: '' },
+    items: o.items || [],
+    notes: o.notes,
+    createdAt: o.created_at,
+    updatedAt: o.updated_at,
+  };
+}
+
+export async function getAllOrders(): Promise<Order[]> {
+  const client = sb();
+  if (client) {
+    const { data } = await client.from('orders').select('*').order('created_at', { ascending: false });
+    if (data && data.length > 0) return data.map(mapOrder);
+  }
+  return memOrders;
+}
+
+export async function getOrderById(id: string): Promise<Order | undefined> {
+  const client = sb();
+  if (client) {
+    const { data } = await client.from('orders').select('*').eq('id', id).single();
+    return data ? mapOrder(data) : undefined;
+  }
+  return memOrders.find(o => o.id === id);
+}
+
+export async function getOrderByNumber(orderNumber: string): Promise<Order | undefined> {
+  const client = sb();
+  if (client) {
+    const { data } = await client.from('orders').select('*').eq('order_number', orderNumber).single();
+    return data ? mapOrder(data) : undefined;
+  }
+  return memOrders.find(o => o.orderNumber === orderNumber);
+}
+
+export async function createOrder(data: Partial<Order>): Promise<Order> {
+  const client = sb();
+  const orderNumber = data.orderNumber || `VLT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+  const record = {
+    id: data.id || `order-${Date.now()}`,
+    order_number: orderNumber,
+    customer_name: data.customerName || '',
+    customer_email: data.customerEmail || '',
+    customer_phone: data.customerPhone,
+    status: data.status || 'pending',
+    payment_method: data.paymentMethod,
+    payment_status: data.paymentStatus || 'pending',
+    subtotal: data.subtotal || 0,
+    shipping: data.shipping || 0,
+    total: data.total || 0,
+    shipping_addr: data.shippingAddress || {},
+    items: data.items || [],
+    notes: data.notes,
+  };
+  if (client) {
+    const { data: created } = await client.from('orders').insert(record).select().single();
+    return mapOrder(created);
+  }
+  const order: Order = {
+    id: record.id,
+    orderNumber,
+    customerName: record.customer_name,
+    customerEmail: record.customer_email,
+    customerPhone: record.customer_phone,
+    status: record.status as Order['status'],
+    paymentMethod: record.payment_method,
+    paymentStatus: record.payment_status as Order['paymentStatus'],
+    subtotal: record.subtotal,
+    shipping: record.shipping,
+    total: record.total,
+    shippingAddress: (record.shipping_addr || {}) as { firstName: string; lastName: string; email: string; phone?: string; address: string; city: string; state: string; zip: string },
+    items: record.items,
+    notes: record.notes,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  memOrders.unshift(order);
+  return order;
+}
+
+export async function updateOrderStatus(id: string, status: Order['status']): Promise<Order | undefined> {
+  const client = sb();
+  if (client) {
+    const { data } = await client.from('orders').update({ status, updated_at: new Date().toISOString() }).eq('id', id).select().single();
+    return data ? mapOrder(data) : undefined;
+  }
+  const idx = memOrders.findIndex(o => o.id === id);
+  if (idx === -1) return undefined;
+  memOrders[idx].status = status;
+  memOrders[idx].updatedAt = new Date().toISOString();
+  return memOrders[idx];
+}
+
+export async function getOrderStats() {
+  const orders = await getAllOrders();
+  const total = orders.length;
+  const pending = orders.filter(o => o.status === 'pending').length;
+  const processing = orders.filter(o => o.status === 'processing').length;
+  const shipped = orders.filter(o => o.status === 'shipped').length;
+  const delivered = orders.filter(o => o.status === 'delivered').length;
+  const cancelled = orders.filter(o => o.status === 'cancelled').length;
+  const revenue = orders.filter(o => o.status !== 'cancelled' && o.status !== 'refunded').reduce((sum, o) => sum + o.total, 0);
+  return { total, pending, processing, shipped, delivered, cancelled, revenue };
 }
 
 // ============ SEARCH ============

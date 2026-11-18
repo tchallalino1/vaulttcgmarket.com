@@ -16,7 +16,7 @@ export default function CheckoutContent() {
 
   const handleShippingSubmit = (e: React.FormEvent) => { e.preventDefault(); setStep('payment'); };
   const handlePaymentSubmit = (e: React.FormEvent) => { e.preventDefault(); setStep('review'); };
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     const orderNum = `VLT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
     const email = shippingInfo.email;
     const name = `${shippingInfo.firstName} ${shippingInfo.lastName}`;
@@ -28,8 +28,36 @@ export default function CheckoutContent() {
 
     // Save state before clearing
     setOrderNumber(orderNum);
-    clearCart();
-    setStep('confirmation');
+
+    // Create order in database
+    try {
+      await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderNumber: orderNum,
+          customerName: name,
+          customerEmail: email,
+          status: 'pending',
+          paymentMethod: paymentInfo.method,
+          paymentStatus: 'pending',
+          subtotal: orderSubtotal,
+          shipping: orderShipping,
+          total: orderTotal,
+          shippingAddress: address,
+          items: items.map(item => ({
+            id: `item-${Date.now()}-${item.product.id}`,
+            productId: item.product.id,
+            name: item.product.name,
+            price: item.product.price,
+            quantity: item.quantity,
+            image: item.product.images?.[0] || '',
+          })),
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to create order:', err);
+    }
 
     // Send email AFTER state updates (fire and forget)
     fetch('/api/email/order-confirmation', {
@@ -46,6 +74,9 @@ export default function CheckoutContent() {
         shippingAddress: address,
       }),
     }).then(r => r.json()).then(d => console.log('Email sent:', d)).catch(e => console.error('Email failed:', e));
+
+    clearCart();
+    setStep('confirmation');
   };
 
   if (items.length === 0 && step !== 'confirmation') {
